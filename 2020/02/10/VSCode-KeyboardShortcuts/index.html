@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Cain">
+
+
+
+
+
+<title>VSCode Keyboard Shortcuts | Cain</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cain&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cain&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">VSCode Keyboard Shortcuts</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Cain</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">February 10, 2020&nbsp;&nbsp;10:33:00</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>常用的Vscode快捷键</p>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><h3 id="删除整行"><a href="#删除整行" class="headerlink" title="删除整行"></a>删除整行</h3><p><kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd></p>
+<h3 id="剪切"><a href="#剪切" class="headerlink" title="剪切"></a>剪切</h3><p><kbd>Command</kbd>+<kbd>X</kbd> 剪切光标选择文本,没选择则剪切当前行</p>
+<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><p><kbd>Command</kbd>+<kbd>C</kbd> 复制光标选择文本，没选择则复制当前行</p>
+<h3 id="上移一行"><a href="#上移一行" class="headerlink" title="上移一行"></a>上移一行</h3><p><kbd>Option</kbd>+<kbd>Up</kbd></p>
+<h3 id="下移一行"><a href="#下移一行" class="headerlink" title="下移一行"></a>下移一行</h3><p><kbd>Option</kbd>+<kbd>Down</kbd></p>
+<h3 id="上行复制"><a href="#上行复制" class="headerlink" title="上行复制"></a>上行复制</h3><p><kbd>Option</kbd>+<kbd>Shift</kbd>+<kbd>Up</kbd></p>
+<h3 id="下行复制"><a href="#下行复制" class="headerlink" title="下行复制"></a>下行复制</h3><p><kbd>Option</kbd>+<kbd>Shift</kbd>+<kbd>Down</kbd></p>
+<h3 id="下一行插入"><a href="#下一行插入" class="headerlink" title="下一行插入"></a>下一行插入</h3><p><kbd>Command</kbd>+<kbd>Enter</kbd></p>
+<h3 id="上一行插入"><a href="#上一行插入" class="headerlink" title="上一行插入"></a>上一行插入</h3><p><kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd></p>
+<h3 id="减少缩进"><a href="#减少缩进" class="headerlink" title="减少缩进"></a>减少缩进</h3><p><kbd>Command</kbd>+<kbd>[</kbd> </p>
+<h3 id="增加缩进"><a href="#增加缩进" class="headerlink" title="增加缩进"></a>增加缩进</h3><p><kbd>Command</kbd>+<kbd>]</kbd></p>
+<h3 id="跳到文件开头"><a href="#跳到文件开头" class="headerlink" title="跳到文件开头"></a>跳到文件开头</h3><p><kbd>Command</kbd>+<kbd>Up</kbd></p>
+<h3 id="跳到文件结尾"><a href="#跳到文件结尾" class="headerlink" title="跳到文件结尾"></a>跳到文件结尾</h3><p><kbd>Command</kbd>+<kbd>Down</kbd></p>
+<h3 id="整屏向上滚动"><a href="#整屏向上滚动" class="headerlink" title="整屏向上滚动"></a>整屏向上滚动</h3><p><kbd>Command</kbd>+<kbd>PgUp</kbd></p>
+<h3 id="整屏向下滚动"><a href="#整屏向下滚动" class="headerlink" title="整屏向下滚动"></a>整屏向下滚动</h3><p><kbd>Command</kbd>+<kbd>PgDown</kbd></p>
+<h3 id="折叠代码块"><a href="#折叠代码块" class="headerlink" title="折叠代码块"></a>折叠代码块</h3><p><kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>[</kbd></p>
+<h3 id="展开代码块"><a href="#展开代码块" class="headerlink" title="展开代码块"></a>展开代码块</h3><p><kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>]</kbd></p>
+<h3 id="添加、移除注释"><a href="#添加、移除注释" class="headerlink" title="添加、移除注释"></a>添加、移除注释</h3><p><kbd>Command</kbd>+<kbd>/</kbd></p>
+<h3 id="添加、移除注释快"><a href="#添加、移除注释快" class="headerlink" title="添加、移除注释快"></a>添加、移除注释快</h3><p><kbd>Option</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd></p>
+<h2 id="多光标-选择"><a href="#多光标-选择" class="headerlink" title="多光标|选择"></a>多光标|选择</h2><h3 id="插入多个光标"><a href="#插入多个光标" class="headerlink" title="插入多个光标"></a>插入多个光标</h3><p><kbd>Option</kbd> + 点击</p>
+<h3 id="向上、下插入光标"><a href="#向上、下插入光标" class="headerlink" title="向上、下插入光标"></a>向上、下插入光标</h3><p><kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>Up/Down</kbd></p>
+<h3 id="撤销上一个光标操作"><a href="#撤销上一个光标操作" class="headerlink" title="撤销上一个光标操作"></a>撤销上一个光标操作</h3><p><kbd>Command</kbd>+<kbd>U</kbd></p>
+<h3 id="在行尾加入光标"><a href="#在行尾加入光标" class="headerlink" title="在行尾加入光标"></a>在行尾加入光标</h3><p><kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd></p>
+<h3 id="选中当前选择文本相同部分"><a href="#选中当前选择文本相同部分" class="headerlink" title="选中当前选择文本相同部分"></a>选中当前选择文本相同部分</h3><p><kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd></p>
+<h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><h3 id="新建文件"><a href="#新建文件" class="headerlink" title="新建文件"></a>新建文件</h3><p><kbd>Command</kbd>+<kbd>N</kbd></p>
+<h3 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h3><p><kbd>Command</kbd>+<kbd>O</kbd></p>
+<h3 id="关闭当前标签"><a href="#关闭当前标签" class="headerlink" title="关闭当前标签"></a>关闭当前标签</h3><p><kbd>Command</kbd>+<kbd>W</kbd></p>
+<h3 id="打开上次被关闭的文件"><a href="#打开上次被关闭的文件" class="headerlink" title="打开上次被关闭的文件"></a>打开上次被关闭的文件</h3><p><kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Cain</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://cainyi.github.io/2020/02/10/VSCode-KeyboardShortcuts/">https://cainyi.github.io/2020/02/10/VSCode-KeyboardShortcuts/</a></span>
+                    </p>
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E7%BC%96%E8%BE%91%E5%99%A8/"># 编辑器</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/02/20/Js-Module/">javascript 中的模块化</a>
+            
+            
+            <a class="next" rel="next" href="/2019/12/04/Flutter-start/">Flutter 常用命令介绍</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cain | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?1c25e4411359eec4e07a54481d7afecf";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</footer>
+
+    </div>
+</body>
+</html>
