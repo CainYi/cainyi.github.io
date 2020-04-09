@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
 <meta name="viewport"
@@ -49,16 +49,16 @@
         <header>
     <nav class="navbar">
         <div class="container">
-            <div class="navbar-header header-logo"><a href="/">Cain&#39;s Blog</a></div>
+            <div class="navbar-header header-logo"><a href="/">Cain</a></div>
             <div class="menu navbar-right">
                 
-                    <a class="menu-item" href="/archives">Posts</a>
+                    <a class="menu-item" href="/archives">文章</a>
                 
-                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/category">分类</a>
                 
-                    <a class="menu-item" href="/tag">Tags</a>
+                    <a class="menu-item" href="/tag">标签</a>
                 
-                    <a class="menu-item" href="/about">About</a>
+                    <a class="menu-item" href="/about">关于</a>
                 
                 <input id="switch_default" type="checkbox" class="switch_default">
                 <label for="switch_default" class="toggleBtn"></label>
@@ -71,19 +71,19 @@
         <div class="container">
             <div class="navbar-header">
                 <div>
-                    <a href="/">Cain&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                    <a href="/">Cain</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
                 </div>
                 <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
             </div>
             <div class="menu" id="mobile-menu">
                 
-                    <a class="menu-item" href="/archives">Posts</a>
+                    <a class="menu-item" href="/archives">文章</a>
                 
-                    <a class="menu-item" href="/category">Categories</a>
+                    <a class="menu-item" href="/category">分类</a>
                 
-                    <a class="menu-item" href="/tag">Tags</a>
+                    <a class="menu-item" href="/tag">标签</a>
                 
-                    <a class="menu-item" href="/about">About</a>
+                    <a class="menu-item" href="/about">关于</a>
                 
             </div>
         </div>
@@ -111,9 +111,9 @@
     <div class="tocbot-list">
     </div>
     <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">移到底部</a>
     </div>
 </div>
 
@@ -142,7 +142,7 @@
             scrollSmooth: true,
         });
         b.setAttribute("onclick", "collapse_toc()");
-        b.innerHTML = "Collapse all"
+        b.innerHTML = "收起"
     }
 
     function collapse_toc() {
@@ -156,7 +156,7 @@
             scrollSmooth: true,
         });
         b.setAttribute("onclick", "expand_toc()");
-        b.innerHTML = "Expand all"
+        b.innerHTML = "展开"
     }
 
     function go_top() {
@@ -177,12 +177,10 @@
             
                 <div class="post-meta">
                     
-                        Author: <a itemprop="author" rel="author" href="/">Cain</a>
-                    
 
                     
                         <span class="post-time">
-                        Date: <a href="#">February 20, 2020&nbsp;&nbsp;21:40:00</a>
+                        Date: <a href="#">二月 20, 2020&nbsp;&nbsp;21:40:00</a>
                         </span>
                     
                     
@@ -206,18 +204,18 @@
 <h3 id="实现模块的几种方式"><a href="#实现模块的几种方式" class="headerlink" title="实现模块的几种方式"></a>实现模块的几种方式</h3><h4 id="立即执行函数"><a href="#立即执行函数" class="headerlink" title="立即执行函数"></a>立即执行函数</h4><blockquote>
 <p>使用立即执行函数实现模块化是常见的手段，通过函数作用域解决了命名冲突、污染全局作用域的问题 </p>
 </blockquote>
-<pre><code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">variable</span>)</span>&#123;</span><br><span class="line">	variable.test = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">	<span class="comment">// ... 声明各种变量、函数都不会污染全局作用域</span></span><br><span class="line"> &#125;)(variable)</span><br></pre></td></tr></table></figure></code></pre><h4 id="AMD-amp-CMD"><a href="#AMD-amp-CMD" class="headerlink" title="AMD &amp; CMD"></a>AMD &amp; CMD</h4><blockquote>
+<pre><code><figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">variable</span>)</span>&#123;<br>	variable.test = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;&#125;<br>	<span class="hljs-comment">// ... 声明各种变量、函数都不会污染全局作用域</span><br> &#125;)(variable)<br></code></pre></td></tr></table></figure></code></pre><h4 id="AMD-amp-CMD"><a href="#AMD-amp-CMD" class="headerlink" title="AMD &amp; CMD"></a>AMD &amp; CMD</h4><blockquote>
 <p>AMD (Asynchronous Module Definition)是 RequireJS 在推广过程中对模块定义的规范化产出. <br><br>    CMD (Common Module Definition) 是 SeaJS 在推广过程中对模块定义的规范化产出。</p>
 </blockquote>
 <pre><code>- 对于依赖的模块，AMD 是提前执行，CMD 是延迟执行。不过 RequireJS 从 2.0 开始，也改成可以延迟执行（根据写法不同，处理方式不同）
-- CMD 推崇依赖就近，AMD 推崇依赖前置</code></pre>  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AMD</span></span><br><span class="line">define([<span class="string">'./a'</span>, <span class="string">'./b'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 加载模块完毕可以使用</span></span><br><span class="line">  a.do()</span><br><span class="line">  b.do()</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// CMD</span></span><br><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params">require, exports, module</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 加载模块</span></span><br><span class="line">  <span class="comment">// 可以把 require 写在函数体的任意地方实现延迟加载</span></span><br><span class="line">  <span class="keyword">var</span> a = <span class="built_in">require</span>(<span class="string">'./a'</span>)</span><br><span class="line">  a.doSomething()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+- CMD 推崇依赖就近，AMD 推崇依赖前置</code></pre>  <figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// AMD</span><br>define([<span class="hljs-string">'./a'</span>, <span class="hljs-string">'./b'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a, b</span>) </span>&#123;<br>  <span class="hljs-comment">// 加载模块完毕可以使用</span><br>  a.do()<br>  b.do()<br>&#125;)<br><span class="hljs-comment">// CMD</span><br>define(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require, exports, module</span>) </span>&#123;<br>  <span class="hljs-comment">// 加载模块</span><br>  <span class="hljs-comment">// 可以把 require 写在函数体的任意地方实现延迟加载</span><br>  <span class="hljs-keyword">var</span> a = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./a'</span>)<br>  a.doSomething()<br>&#125;)<br></code></pre></td></tr></table></figure>
 
 <h4 id="ES6-Module"><a href="#ES6-Module" class="headerlink" title="ES6 Module"></a>ES6 Module</h4><ul>
 <li>CommonJS 支持动态导入，也就是 require(${path}/xx.js)，后者目前不支持，但是已有提案CommonJS 是同步导入，因为用于服务端，文件都在本地，同步导入即使卡住主线程影响也不大。而后者是异步导入，因为用于浏览器，需要下载文件，如果也采用同步导入会对渲染有很大影响。</li>
 <li>CommonJS 在导出时都是值拷贝，就算导出的值变了，导入的值也不会改变，所以如果想更新值，必须重新导入一次。但是 ES Module 采用实时绑定的方式，导入导出的值都指向同一个内存地址，所以导入值会跟随导出值变化</li>
 <li>ES Module 会编译成 require/exports来执行的</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入模块 API</span></span><br><span class="line"><span class="keyword">import</span> XXX <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line"><span class="keyword">import</span> &#123; XXX &#125; <span class="keyword">from</span> <span class="string">'./a.js'</span></span><br><span class="line"><span class="comment">// 导出模块 API</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 引入模块 API</span><br><span class="hljs-keyword">import</span> XXX <span class="hljs-keyword">from</span> <span class="hljs-string">'./a.js'</span><br><span class="hljs-keyword">import</span> &#123; XXX &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'./a.js'</span><br><span class="hljs-comment">// 导出模块 API</span><br><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;&#125;<br></code></pre></td></tr></table></figure>
 
 
 <h4 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h4><blockquote>
@@ -229,17 +227,17 @@
 <li><p>CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。</p>
 </li>
 <li><p>CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成</p>
-<h5 id="定义模块"><a href="#定义模块" class="headerlink" title="定义模块"></a>定义模块</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// module.js</span></span><br><span class="line"><span class="keyword">let</span> name = <span class="string">'Cain chen'</span>;</span><br><span class="line"><span class="keyword">let</span> sayName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123; name, sayName &#125;</span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line">exports.sayName = sayName;</span><br></pre></td></tr></table></figure>
-<h5 id="加载模块"><a href="#加载模块" class="headerlink" title="加载模块"></a>加载模块</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 require 引入依赖</span></span><br><span class="line"><span class="keyword">let</span> <span class="built_in">module</span> = <span class="built_in">require</span>(<span class="string">'./module.js'</span>);</span><br><span class="line"><span class="built_in">module</span>.sayName(); <span class="comment">//  Cain chen</span></span><br></pre></td></tr></table></figure>
+<h5 id="定义模块"><a href="#定义模块" class="headerlink" title="定义模块"></a>定义模块</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// module.js</span><br><span class="hljs-keyword">let</span> name = <span class="hljs-string">'Cain chen'</span>;<br><span class="hljs-keyword">let</span> sayName = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(name);<br>&#125;;<br><span class="hljs-built_in">module</span>.exports = &#123; name, sayName &#125;<br><span class="hljs-comment">// 或者</span><br>exports.sayName = sayName;<br></code></pre></td></tr></table></figure>
+<h5 id="加载模块"><a href="#加载模块" class="headerlink" title="加载模块"></a>加载模块</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 通过 require 引入依赖</span><br><span class="hljs-keyword">let</span> <span class="hljs-built_in">module</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./module.js'</span>);<br><span class="hljs-built_in">module</span>.sayName(); <span class="hljs-comment">//  Cain chen</span><br></code></pre></td></tr></table></figure>
 
 <h5 id="module-export、exports的区别"><a href="#module-export、exports的区别" class="headerlink" title="module.export、exports的区别"></a>module.export、exports的区别</h5><ul>
 <li><p>module.exports 方法还可以单独返回一个数据类型(String、Number、Object…)，而 exports 只能返回一个 Object 对象</p>
 </li>
 <li><p>所有的 exports 对象最终都是通过 module.exports 传递执行，因此可以更确切地说，exports 是给 module.exports 添加属性和方法</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">exports.name = <span class="string">'Cain chen'</span>;</span><br><span class="line">exports.age = <span class="number">30</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">module</span>.exports); <span class="comment">// result: &#123; name: 'Cain chen', age: 30 &#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">exports.name = <span class="hljs-string">'Cain chen'</span>;<br>exports.age = <span class="hljs-number">30</span>;<br><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">module</span>.exports); <span class="hljs-comment">// result: &#123; name: 'Cain chen', age: 30 &#125;</span><br></code></pre></td></tr></table></figure>
 </li>
 <li><p>同时用到module.export跟exports的时候</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// case1</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;</span><br><span class="line">exports.b = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">module</span>.exports); <span class="comment">// &#123; a:1 &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// case2</span></span><br><span class="line"><span class="built_in">module</span>.exports.a =<span class="number">1</span>;</span><br><span class="line">exports.b = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">module</span>.exports); <span class="comment">// &#123; a:1, b:2 &#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// case1</span><br><span class="hljs-built_in">module</span>.exports = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span> &#125;<br>exports.b = <span class="hljs-number">2</span>;<br><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">module</span>.exports); <span class="hljs-comment">// &#123; a:1 &#125;</span><br><br><span class="hljs-comment">// case2</span><br><span class="hljs-built_in">module</span>.exports.a =<span class="hljs-number">1</span>;<br>exports.b = <span class="hljs-number">2</span>;<br><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">module</span>.exports); <span class="hljs-comment">// &#123; a:1, b:2 &#125;</span><br></code></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -253,14 +251,17 @@
             <section class="post-copyright">
                 
                     <p class="copyright-item">
-                        <span>Author:</span>
+                        <span>版权属于:</span>
                         <span>Cain</span>
                     </p>
                 
                 
                     <p class="copyright-item">
-                        <span>Permalink:</span>
+                        <span>本文链接:</span>
                         <span><a href="https://cainyi.github.io/2020/02/20/Js-Module/">https://cainyi.github.io/2020/02/20/Js-Module/</a></span>
+                    </p>
+                    <p class="copyright-item">
+                        <span>转载时须注明出处及本声明</span>
                     </p>
                 
                 
@@ -270,15 +271,15 @@
         
         <section class="post-tags">
             <div>
-                <span>Tag(s):</span>
+                <span>标签:</span>
                 <span class="tag">
                     
                 </span>
             </div>
             <div>
-                <a href="javascript:window.history.back();">back</a>
+                <a href="javascript:window.history.back();">返回</a>
                 <span>· </span>
-                <a href="/">home</a>
+                <a href="/">主页</a>
             </div>
         </section>
         <section class="post-nav">
