@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Cain">
+
+
+
+
+
+<title>常见几个函数的手动实现(debounce、throttle、eventBus、call、apply、bind) | Cain</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cain</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cain</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">移到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">常见几个函数的手动实现(debounce、throttle、eventBus、call、apply、bind)</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 2, 2020&nbsp;&nbsp;13:42:49</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/javascript-javascript/">javascript - [javascript]</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="防抖-dobeunce"><a href="#防抖-dobeunce" class="headerlink" title="防抖(dobeunce)"></a>防抖(dobeunce)</h3><p>适用场景：</p>
+<ul>
+<li>按钮提交场景：防止多次提交按钮，只执行最后提交的一次</li>
+<li>实时搜索，只执行最后一次输入的。<blockquote>
+<p>单位时间内执行最后一次</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> debounce = <span class="function">(<span class="params">fn,delay</span>) =&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> timer = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">...args</span>)=&gt;</span>&#123;</span><br><span class="line">        clearTimeout(timer);</span><br><span class="line">        timer = setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">            fn.apply(<span class="keyword">this</span>,args);</span><br><span class="line">        &#125;,delay)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="节流-throttle"><a href="#节流-throttle" class="headerlink" title="节流 (throttle)"></a>节流 (throttle)</h3><p>使用场景：</p>
+<ul>
+<li>拖拽：固定时间内只执行一次，防止高频次出发位置变动</li>
+<li>缩放：监控浏览器的resize</li>
+<li>动画： 避免短时间内多次出发动画引起性能问题</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> throttle = <span class="function">(<span class="params">fn,delay=<span class="number">200</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> flag = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">...args</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!flag) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        flag = <span class="literal">false</span>;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">            fn.apply(<span class="keyword">this</span>,args);</span><br><span class="line">            flag = <span class="literal">true</span>;</span><br><span class="line">        &#125;,delay);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>单位时间内只执行第一次</p>
+</blockquote>
+<h3 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h3><p>Event bus 是node中各个模块的基石，又是组件间通信的依赖手段之一，同时涉及到了订阅发布的设计模式</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventEmeitter</span> </span>&#123;</span><br><span class="line">    constuctor()&#123;</span><br><span class="line">        <span class="keyword">this</span>._events = <span class="keyword">this</span>.events || <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">        <span class="keyword">this</span>._maxListeners = <span class="keyword">this</span>._maxListenners || <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">EventEmeitter.proptype.emit = <span class="function"><span class="keyword">function</span>(<span class="params">type,...args</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> handler;</span><br><span class="line">    handler = <span class="keyword">this</span>._events.get(type);</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(handler))&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; handler.length; i++&gt;)&#123;</span><br><span class="line">            <span class="keyword">if</span>(args.length&gt;<span class="number">0</span>)&#123;</span><br><span class="line">                handler[i].apply(<span class="keyword">this</span>,args);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                handler[i].apply(<span class="keyword">this</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(args.length&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            handler.apply(<span class="keyword">this</span>,args);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            handler.apply(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 监听名为type的事件</span></span><br><span class="line">EventEmeitter.proptype.addEventListener = <span class="function"><span class="keyword">function</span> (<span class="params">type,fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> handler = <span class="keyword">this</span>._events.get(type); <span class="comment">// 获取对应事件名称的函数</span></span><br><span class="line">    <span class="keyword">if</span>(!handler)&#123;</span><br><span class="line">        <span class="keyword">this</span>._event.set(typs,fn);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(handler &amp;&amp; <span class="keyword">typeof</span> handler === <span class="string">'function'</span>)&#123;</span><br><span class="line">        <span class="comment">// 如果handler是函数说明当前只有一个监听函数</span></span><br><span class="line">        <span class="keyword">this</span>._event.set(typs,[handler,fn]);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(handler.length &lt;= <span class="keyword">this</span>._maxListenners) <span class="keyword">return</span> handler.push(fn); <span class="comment">// 添加多个监听有上限</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">EventEmeitter.proptype.removeListener = <span class="function"><span class="keyword">function</span>(<span class="params">type,fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> handler = <span class="keyword">this</span>._events.get(tyoe); <span class="comment">// 获取对应事件名称的函数</span></span><br><span class="line">    <span class="comment">// 如果是函数,说明只被监听了一次</span></span><br><span class="line">    <span class="keyword">if</span>(handler &amp;&amp; <span class="keyword">typeof</span> handler === <span class="string">'function'</span>)&#123;</span><br><span class="line">        <span class="keyword">this</span>._events.delete(typs,fn);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">// 如果handler是数组，说明被多次监听，需要找到对应的函数的位置</span></span><br><span class="line">        <span class="keyword">let</span> position;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span> ; i&lt; handler.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(handler[i] === fn)&#123;</span><br><span class="line">                position = i</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                position = <span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 如果找到匹配的函数</span></span><br><span class="line">        <span class="keyword">if</span>(position !== <span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="comment">// 直接删除</span></span><br><span class="line">            handler.splice(position,<span class="number">1</span>);</span><br><span class="line">            <span class="comment">// 如果清除后只有一个函数,那么取消数组,以函数形式保存</span></span><br><span class="line">            <span class="keyword">if</span>(handler.length ===<span class="number">1</span>)&#123;</span><br><span class="line">                <span class="keyword">this</span>._events.set(typs,handler[<span class="number">0</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="call简单实现"><a href="#call简单实现" class="headerlink" title="call简单实现"></a>call简单实现</h3><p>call的作用</p>
+<ul>
+<li>将函数设为对象的属性</li>
+<li>执行并且删除这个函数</li>
+<li>指定this到函数并传入给定参数执行函数</li>
+<li>如果不传入参数、默认指向window</li>
+<li>如果传入一个原始类数据，这个只会被转换为它对应的对象形式</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Function</span>.proptype.myCall = <span class="function"><span class="keyword">function</span>(<span class="params">context</span>)</span>&#123;</span><br><span class="line">    context.fn = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">let</span> args = [];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">1</span>,len = <span class="built_in">arguments</span>.length ;i&lt; len ;i++)&#123;</span><br><span class="line">        args.push(<span class="built_in">arguments</span>[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    context.fn(...args);</span><br><span class="line">    <span class="keyword">let</span> result = context.fn(...args);</span><br><span class="line">    <span class="keyword">delete</span> context.fn;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="apply-简单实现"><a href="#apply-简单实现" class="headerlink" title="apply 简单实现"></a>apply 简单实现</h3><p>apply原理与call很相似</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Function</span>.proptype.myApply = <span class="function"><span class="keyword">function</span>(<span class="params">context,arr</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> context = <span class="built_in">Object</span>(context) || <span class="built_in">window</span>;</span><br><span class="line">    context.fn = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> result ;</span><br><span class="line">    <span class="keyword">if</span>(!arr)&#123;</span><br><span class="line">        result = context.fn()</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> args = [];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>,len=arr.length;i&lt;len; i++)&#123;</span><br><span class="line">            args.push(<span class="string">"arr["</span>+i+<span class="string">"]"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        result = <span class="built_in">eval</span>(<span class="string">"context.fn("</span> + args + <span class="string">")"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span> context.fn;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="bind-简单实现"><a href="#bind-简单实现" class="headerlink" title="bind 简单实现"></a>bind 简单实现</h3><p>实现bind分为两步</p>
+<ul>
+<li>返回一个函数，绑定this，传递预置参数</li>
+<li>bind返回的函数可以作为构造函数使用，作为构造函数时应使得this失效，但是传入的参数依然有效</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// mdn的实现</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="built_in">Function</span>.prototype.bind) &#123;</span><br><span class="line">  <span class="built_in">Function</span>.prototype.bind = <span class="function"><span class="keyword">function</span>(<span class="params">oThis</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span> !== <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="comment">// closest thing possible to the ECMAScript 5</span></span><br><span class="line">      <span class="comment">// internal IsCallable function</span></span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Function.prototype.bind - what is trying to be bound is not callable'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> aArgs   = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>),</span><br><span class="line">        fToBind = <span class="keyword">this</span>,</span><br><span class="line">        fNOP    = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">        fBound  = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="comment">// this instanceof fBound === true时,说明返回的fBound被当做new的构造函数调用</span></span><br><span class="line">          <span class="keyword">return</span> fToBind.apply(<span class="keyword">this</span> <span class="keyword">instanceof</span> fBound</span><br><span class="line">                 ? <span class="keyword">this</span></span><br><span class="line">                 : oThis,</span><br><span class="line">                 <span class="comment">// 获取调用时(fBound)的传参.bind 返回的函数入参往往是这么传递的</span></span><br><span class="line">                 aArgs.concat(<span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>)));</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 维护原型关系</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.prototype) &#123;</span><br><span class="line">      <span class="comment">// Function.prototype doesn't have a prototype property</span></span><br><span class="line">      fNOP.prototype = <span class="keyword">this</span>.prototype; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 下行的代码使fBound.prototype是fNOP的实例,因此</span></span><br><span class="line">    <span class="comment">// 返回的fBound若作为new的构造函数,new生成的新对象作为this传入fBound,新对象的__proto__就是fNOP的实例</span></span><br><span class="line">    fBound.prototype = <span class="keyword">new</span> fNOP();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> fBound;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.cxymsg.com/guide/jsWritten.html#%E5%AE%9E%E7%8E%B0%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF" target="_blank" rel="noopener">参考链接</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>版权属于:</span>
+                        <span>Cain</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://cainyi.github.io/2020/04/02/Js-callBindApply/">https://cainyi.github.io/2020/04/02/Js-callBindApply/</a></span>
+                    </p>
+                    <p class="copyright-item">
+                        <span>转载时须注明出处及本声明</span>
+                    </p>
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/03/28/ReactHooks/">你可能不知道的 React Hooks</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cain | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?1c25e4411359eec4e07a54481d7afecf";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</footer>
+
+    </div>
+</body>
+</html>
