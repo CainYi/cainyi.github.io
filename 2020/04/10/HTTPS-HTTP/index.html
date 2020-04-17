@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Cain">
+
+
+
+
+
+<title>什么是HTTPS？与HTTP有的区别 | Cain</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cain</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cain</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">移到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">什么是HTTPS？与HTTP有的区别</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 10, 2020&nbsp;&nbsp;9:00:48</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="什么是HTTPS"><a href="#什么是HTTPS" class="headerlink" title="什么是HTTPS"></a>什么是HTTPS</h2><p>HTTPS是在HTTP上建立SSL加密层，并对传输数据进行加密，是HTTP协议的安全版。</p>
+<p>HTTPS的用途有：</p>
+<ul>
+<li>对数据进行加密，并建立一个信息安全通道，来保证传输过程中数据安全。</li>
+<li>对网站服务器进行真实的身份认证。</li>
+</ul>
+<p><img src="./1587085120050.jpg" alt="jpg"></p>
+<h2 id="为什么需要HTTPS"><a href="#为什么需要HTTPS" class="headerlink" title="为什么需要HTTPS"></a>为什么需要HTTPS</h2><p>在HTTP协议中有可能存在信息窃取或身份伪装等安全问题。使用HTTPS通信机制可以有效的防止这些问题。</p>
+<p>HTTP存在哪些安全问题</p>
+<ul>
+<li><p>通信使用明文，内容可能被窃听<br>HTTP不具备加密功能，无法对通信整体进行加密处理。所以HTTP报文使用明文方式发送。明文的缺陷会导致数据泄露、数据篡改、流量劫持、钓鱼攻击等安全问题。</p>
+</li>
+<li><p>无法证明报文的完整性，可能存在被篡改<br>完整性指的是信息的准确度，即无法判断信息的是否准确。没有任何办法确认，发出的请求、响应和接收到的请求、响应是前后相同的。</p>
+</li>
+<li><p>不严重通信方的身份，可能遭遇伪装<br>HTTP协议中的请求和响应不会对通信方进行确认。任何人都可以伪造虚假服务器欺骗用户，实现钓鱼诈骗。</p>
+</li>
+</ul>
+<h2 id="HTTPS如何解决HTTP的问题"><a href="#HTTPS如何解决HTTP的问题" class="headerlink" title="HTTPS如何解决HTTP的问题"></a>HTTPS如何解决HTTP的问题</h2><p>HTTPS并非是应用层的新协议。只是HTTP通信接口部分用SSL和TLS协议代替。</p>
+<p>通常HTTP直接和TCP通信，当使用SSL时，则演变成先和SSL通信，再有SSL和TCP通信。</p>
+<p>在采用了SSL协议后，HTTP就拥有了HTTPS的加密、证书和完整性保护这些功能。HTTP加上加密处理和认证及完整性保护之后就是HTTPS。<br><img src="./167d4860c0ede033.jpg" alt="jpg"></p>
+<blockquote>
+<p>HTTPS协议主要功能基本都依赖于TLS/SSL协议。TLS/SSL的功能主要依赖于三类基本算法：散列函数、对称加密、非对称加密。其中用非对称加密用来实现身份认证和秘钥协商，对称加密算法采用协商的秘钥对数据进行加密，基于散列函数验证信息完整性。</p>
+</blockquote>
+<p><img src="./167d48bc77ee69f8.jpg" alt="pic"></p>
+<h2 id="解决内容被窃听问题-–加密"><a href="#解决内容被窃听问题-–加密" class="headerlink" title="解决内容被窃听问题 –加密"></a>解决内容被窃听问题 –加密</h2><ol>
+<li><p>对称加密<br>加密解密用同一个秘钥。加密和解密都会用到秘钥。<br>对称加密方式加密时必须将秘钥发送给对方。</p>
+</li>
+<li><p>非对称加密<br>公开秘钥加密使用一对非对称的秘钥。分别为公钥和私钥。<br>非对称加密特点是信息传输一对多，所以服务器只需要维持一个私钥就能和多个客户端进行加密通信了。</p>
+<p> 缺点：</p>
+<ul>
+<li>公钥是公开的，针对私密加密的信息，黑客截获后可以使用公钥进行解密，获取内容。</li>
+<li>公钥不含服务器的信息，使用得对称机密算法无法确保服务器身份的合法性，存在被攻击的风险。</li>
+<li>使用非对称加密在数据加密解密过程中需要消耗一定的时间。降低了数据传输的效率。</li>
+</ul>
+</li>
+<li><p>对称加密+非对称加密（HTTPS)<br>使用对称加密好处是解密的效率比较快，非对称加密使得传输的内容不能被破解。<br>在交换秘钥环节使用非对称加密，之后建立的通信交换报文则是以对称加密方式。</p>
+</li>
+</ol>
+<h3 id="解决报文可能遭篡改-信息完整性-–-数字签名"><a href="#解决报文可能遭篡改-信息完整性-–-数字签名" class="headerlink" title="解决报文可能遭篡改(信息完整性) – 数字签名"></a>解决报文可能遭篡改(信息完整性) – 数字签名</h3><p>数字签名的作用：</p>
+<ul>
+<li>能确定消息确实是由发送方签名并发出来的</li>
+<li>数字签名能确定消息的完整性，证明数据是否又被篡改过。</li>
+</ul>
+<h4 id="数字签名的生成"><a href="#数字签名的生成" class="headerlink" title="数字签名的生成"></a>数字签名的生成</h4><p><img src="./16a45a0b0d78df15.jpg" alt="pic"></p>
+<p>将一段文本先用hash函数生成消息摘要，然后用发送者的私钥加密生成数字签名，与原文一同传送给接受者。</p>
+<h4 id="校验数字签名流程"><a href="#校验数字签名流程" class="headerlink" title="校验数字签名流程"></a>校验数字签名流程</h4><p><img src="./16a45a3705e4abda.jpg" alt="pic"><br>接受者只有用发送者的公钥才能解密被加密的摘要信息。然后用HASH函数对收到的原文产生一个摘要信息。与上一步得到的摘要信息对比。如果相同则说明收到的信息是完整的，否则说明信息被修改过。</p>
+<p>证书的颁发机构(CA)。</p>
+<h4 id="解决通信方身份被伪装的问题-–-数字证书"><a href="#解决通信方身份被伪装的问题-–-数字证书" class="headerlink" title="解决通信方身份被伪装的问题 – 数字证书"></a>解决通信方身份被伪装的问题 – 数字证书</h4><p>数字证书认证机构处于客户端与服务器双方都可信赖的地方机构的立场上。</p>
+<p>数字证书认证机构的业务流程：</p>
+<ul>
+<li>服务器方向第三方机构CA提交公钥、组织信息、个人信息（域名）等信息申请认证。</li>
+<li>CA通过多种手段验证申请者提供的信息的真实性，如组织是否存在、企业是否合法、是否拥有域名的所有权。</li>
+<li>审核通过，CA会向申请者签发认证文件-证书。证书包含：申请者公钥、申请者组织信息和个人信息、签发机构CA的信息、有效时间、证书序列号、等信息的明文，同时包含签名。</li>
+<li>Client向Server端发出请求时，Server返回证书文件。</li>
+<li>Client读取证书中的相关信息，采用相同的散列函数计算得到信息的摘要信息，然后利用对应CA的公钥解密签名数据，对比证书的信息摘要是否一致，则可以确定证书的合法性。</li>
+<li>Client还会验证证书的相关域名信息、有效时间等信息；客户端会内置信任CA的证书信息。</li>
+</ul>
+<h3 id="HTTPS工作流程"><a href="#HTTPS工作流程" class="headerlink" title="HTTPS工作流程"></a>HTTPS工作流程</h3><p><img src="./16a45839ceacbb52.jpg" alt="pic"></p>
+<ol>
+<li>Client发起一个HTTPS请求，端口 <code>443</code></li>
+<li>server把配置好的公钥证书返回给客户端。</li>
+<li>Client验证公钥证书：证书是否有效，证书用途是否匹配Client请求的站点，是否在CRL吊销列表，上级证书是否有效… 如果验证通过则继续，否则显示警告信息。</li>
+<li>Client 使用伪随机数生成加密所使用的的对称秘钥，然后用证书的公钥加密这个堆成秘钥，发送给Server。</li>
+<li>Server 使用私钥解密这条消息，得到对称秘钥。此时 Client和Server都有了相同的对称秘钥。</li>
+<li>Server 使用对称秘钥加密 “明文内容A” 发送给Client。</li>
+<li>Client 使用对称秘钥解密响应的密文，得到“明文内容A”</li>
+<li>Client 再次发起HTTPS的请求，使用对称秘钥加密请求的“明文内容B”，然后Server使用对称秘钥解密密文，得到“明文内容B”</li>
+</ol>
+<h2 id="HTTPS与HTTP的区别"><a href="#HTTPS与HTTP的区别" class="headerlink" title="HTTPS与HTTP的区别"></a>HTTPS与HTTP的区别</h2><ul>
+<li>HTTP 是明文传输协议，HTTPS协议是有SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议</li>
+<li>HTTPS比HTTP更加安全，对搜索引擎更友好，利于SEO,谷歌、百度优先索引HTTPS网页;</li>
+<li>HTTPS需要用到SSL证书，而HTTP不用;</li>
+<li>HTTPS标准端口443，HTTP标准端口80;</li>
+<li>HTTPS基于传输层，HTTP基于应用层;</li>
+<li>HTTPS在浏览器显示绿色安全锁，HTTP没有显示;</li>
+</ul>
+<p>! 证书需要收费</p>
+<p><a href="https://juejin.im/post/5ca6a109e51d4544e27e3048" target="_blank" rel="noopener">原文参考链接-《深入理解HTTPS工作原理》</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>版权属于:</span>
+                        <span>Cain</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://cainyi.github.io/2020/04/10/HTTPS-HTTP/">https://cainyi.github.io/2020/04/10/HTTPS-HTTP/</a></span>
+                    </p>
+                    <p class="copyright-item">
+                        <span>转载时须注明出处及本声明</span>
+                    </p>
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/04/02/Js-callBindApply/">常见几个函数的手动实现(debounce、throttle、eventBus、call、apply、bind)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cain | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?1c25e4411359eec4e07a54481d7afecf";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</footer>
+
+    </div>
+</body>
+</html>
