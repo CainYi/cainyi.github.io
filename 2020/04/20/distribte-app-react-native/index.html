@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Cain">
+
+
+
+
+
+<title>打包发布ReactNative流程 | Cain</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cain</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cain</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">移到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">打包发布ReactNative流程</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 20, 2020&nbsp;&nbsp;14:14:09</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/">跨平台开发</a>
+                            
+                                <a href="/categories/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/React-Native/">React-Native</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h2><p>Android要求所有应用都必须先使用证书进行数字签名，然后才能安装。为了通过Google Play商店分发您的Android应用，需要使用发布密钥对其进行签名，然后再将其用于以后的所有更新。</p>
+<h3 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h3><p>在android/app下执行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">keytool -genkey -v -keystore my-release-key.keystore  -<span class="built_in">alias</span> my-key-alias -keyalg RSA -keysize 2048 -validity 10000</span><br></pre></td></tr></table></figure>
+
+<p>在生成过程中需要填写一些信息。</p>
+<h3 id="修改-android-gradle-properties"><a href="#修改-android-gradle-properties" class="headerlink" title="修改 android/gradle.properties"></a>修改 android/gradle.properties</h3><pre><code><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">android.useAndroidX=<span class="keyword">true</span></span><br><span class="line">android.enableJetifier=<span class="keyword">true</span></span><br><span class="line">MYAPP_RELEASE_STORE_FILE=my-release-key.keystore <span class="comment">// 生成证书的名字</span></span><br><span class="line">MYAPP_RELEASE_KEY_ALIAS=my-key-alias <span class="comment">// 生成证书的别名</span></span><br></pre></td></tr></table></figure></code></pre><h3 id="编辑-android-app-build-gradle文件添加如下代码"><a href="#编辑-android-app-build-gradle文件添加如下代码" class="headerlink" title="编辑 android/app/build.gradle文件添加如下代码"></a>编辑 android/app/build.gradle文件添加如下代码</h3><pre><code><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">android &#123;  </span><br><span class="line">    ...  </span><br><span class="line">    defaultConfig &#123; ... &#125;  </span><br><span class="line">    signingConfigs &#123;  </span><br><span class="line">        release &#123;  </span><br><span class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(MYAPP_RELEASE_STORE_FILE)</span>  </span></span><br><span class="line"><span class="function">            storePassword MYAPP_RELEASE_STORE_PASSWORD  </span></span><br><span class="line"><span class="function">            keyAlias xxxx </span></span><br><span class="line"><span class="function">            keyPassword xxxx  <span class="comment">// 证书密码</span></span></span><br><span class="line"><span class="function">        &#125;  </span></span><br><span class="line"><span class="function">    &#125;  </span></span><br><span class="line"><span class="function">    buildTypes </span>&#123;  </span><br><span class="line">        release &#123;  </span><br><span class="line">            ...  </span><br><span class="line">            signingConfig signingConfigs.release  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><p>关于安全性的注意事项: MAC开发可以配置免明文密码输入,通过把证书访问密码写入系统钥匙串里面。每次build时通过自动读取钥匙串中的密码。<a href="https://pilloxa.gitlab.io/posts/safer-passwords-in-gradle/" target="_blank" rel="noopener">设置链接</a>。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">def <span class="title">getPassword</span><span class="params">(String currentUser, String keyChain)</span> </span>&#123;</span><br><span class="line">def stdout = <span class="keyword">new</span> ByteArrayOutputStream()</span><br><span class="line">def stderr = <span class="keyword">new</span> ByteArrayOutputStream()</span><br><span class="line">exec &#123;</span><br><span class="line">    commandLine <span class="string">'security'</span>, <span class="string">'-q'</span>, <span class="string">'find-generic-password'</span>, <span class="string">'-a'</span>, currentUser, <span class="string">'-s'</span>, keyChain, <span class="string">'-w'</span></span><br><span class="line">    standardOutput = stdout</span><br><span class="line">    errorOutput = stderr</span><br><span class="line">    ignoreExitValue <span class="keyword">true</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//noinspection GroovyAssignabilityCheck</span></span><br><span class="line">    stdout.toString().trim()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">def pass = getPassword(<span class="string">"android_keystore"</span>,<span class="string">"android_keystore"</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="打包Android-Release包"><a href="#打包Android-Release包" class="headerlink" title="打包Android Release包"></a>打包Android Release包</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> android</span><br><span class="line">./gradlew bundleRelease // aab</span><br><span class="line">./gradlew assembleRelease // apk</span><br><span class="line">./gradlew assembleRelease // 打包并安装</span><br></pre></td></tr></table></figure>
+<p>打出来的release包路径 <code>android/app/build/outputs/bundle/release/xxx</code> 并且可以将其上传到android应用平台。</p>
+<h2 id="IOS"><a href="#IOS" class="headerlink" title="IOS"></a>IOS</h2><p>IOS打包发布之前需要创建一个APPID,对应需要创建app账号和相应的创建权限。</p>
+<h3 id="创建APPID"><a href="#创建APPID" class="headerlink" title="创建APPID"></a>创建APPID</h3><p><img src="./1587353896789.jpg" alt="pic"></p>
+<p><img src="./1587353966193.jpg" alt="pic"></p>
+<p><img src="./1587353991230.jpg" alt="pic"></p>
+<p><img src="./1587354048130.jpg" alt="pic"></p>
+<p>检查下刚创建的bundle id<br><img src="./1587354106070.jpg" alt="pic"></p>
+<p>将创建的bundle填入xcode identity</p>
+<p><img src="./1587354158779.jpg" alt="pic"></p>
+<h3 id="配置开发证书和发布证书"><a href="#配置开发证书和发布证书" class="headerlink" title="配置开发证书和发布证书"></a>配置开发证书和发布证书</h3><p><img src="./1587353966193.jpg" alt="pic"></p>
+<p>将创建好的证书加入到钥匙串。</p>
+<h3 id="添加测试设备"><a href="#添加测试设备" class="headerlink" title="添加测试设备"></a>添加测试设备</h3><ol>
+<li>在【Certificates,IDs&amp;Profiles】中点击【Devices】进入设备管理界面。</li>
+<li>点击【+】号，注册科调试设备，如图：</li>
+</ol>
+<h3 id="打包ipa包"><a href="#打包ipa包" class="headerlink" title="打包ipa包"></a>打包ipa包</h3><p>点击Product –&gt; Archive,按钮，生成发布文件。当app发布文件上传到AppStore的发布网站后，未发布提交前，若重新打包上传，必须要更换其Build的版本号，否则上传时会报错。</p>
+<h3 id="上传发布文件"><a href="#上传发布文件" class="headerlink" title="上传发布文件"></a>上传发布文件</h3><p>点击【Validate App】按钮，校验安装包。<br>上传安装包到AppStore</p>
+<p><img src="./1587361886694.jpg" alt="pic"></p>
+<h3 id="发布新版本、新应用"><a href="#发布新版本、新应用" class="headerlink" title="发布新版本、新应用"></a>发布新版本、新应用</h3><p>登录到<a href="https://developer.apple.com/" target="_blank" rel="noopener">Apple开发平台</a>,进入到 App Store Connect。<br><img src="./1587362127032.jpg" alt="pic"></p>
+<h3 id="添加新应用"><a href="#添加新应用" class="headerlink" title="添加新应用"></a>添加新应用</h3><p><img src="./1587362154218.jpg" alt="pic"></p>
+<h3 id="点击新建app，填写应用名称、平台、语言、SKU等。"><a href="#点击新建app，填写应用名称、平台、语言、SKU等。" class="headerlink" title="点击新建app，填写应用名称、平台、语言、SKU等。"></a>点击新建app，填写应用名称、平台、语言、SKU等。</h3><p><img src="./1587362167913.jpg" alt="pic"></p>
+<p>创建应用后，在App信息页面填写上App的基本信息。然后点击添加版本或平台。<br><img src="./1587362572498.jpg" alt="pic"></p>
+<p>添加要发布的版本之后， 填写版本信息。包括App预览图和截屏(有截图尺寸要求，具体参见详细的截屏要求)。版本的宣传文本、描述等重要信息。<br><img src="./1587362701488.jpg" alt="pic"></p>
+<p>在上传完发布包之后 可以在构建版本中选择上传之后的版本。<br><img src="./1587362843340.jpg" alt="pic"><br><img src="./1587362927086.jpg" alt="pic"></p>
+<h3 id="App审核的信息"><a href="#App审核的信息" class="headerlink" title="App审核的信息"></a>App审核的信息</h3><p>如果app有登录，需要供用户名和密码，以便审核人员登录App进行验证。并提供下开发的联系信息。方便及时收到审核反馈。<br><img src="./1587363056402.jpg" alt="pic"></p>
+<p>检查当前版本的提交信息无误之后，就可以提交审核。审核的进度有邮件提醒。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>版权属于:</span>
+                        <span>Cain</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://cainyi.github.io/2020/04/20/distribte-app-react-native/">https://cainyi.github.io/2020/04/20/distribte-app-react-native/</a></span>
+                    </p>
+                    <p class="copyright-item">
+                        <span>转载时须注明出处及本声明</span>
+                    </p>
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/04/10/HTTPS-HTTP/">什么是HTTPS？与HTTP有的区别</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cain | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?1c25e4411359eec4e07a54481d7afecf";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</footer>
+
+    </div>
+</body>
+</html>
