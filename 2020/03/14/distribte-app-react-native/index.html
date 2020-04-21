@@ -180,7 +180,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">四月 20, 2020&nbsp;&nbsp;14:14:09</a>
+                        Date: <a href="#">三月 14, 2020&nbsp;&nbsp;9:13:31</a>
                         </span>
                     
                     
@@ -203,7 +203,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">keytool -genkey -v -keystore my-release-key.keystore  -<span class="built_in">alias</span> my-key-alias -keyalg RSA -keysize 2048 -validity 10000</span><br></pre></td></tr></table></figure>
 
 <p>在生成过程中需要填写一些信息。</p>
-<h3 id="修改-android-gradle-properties"><a href="#修改-android-gradle-properties" class="headerlink" title="修改 android/gradle.properties"></a>修改 android/gradle.properties</h3><pre><code><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">android.useAndroidX=<span class="keyword">true</span></span><br><span class="line">android.enableJetifier=<span class="keyword">true</span></span><br><span class="line">MYAPP_RELEASE_STORE_FILE=my-release-key.keystore <span class="comment">// 生成证书的名字</span></span><br><span class="line">MYAPP_RELEASE_KEY_ALIAS=my-key-alias <span class="comment">// 生成证书的别名</span></span><br></pre></td></tr></table></figure></code></pre><h3 id="编辑-android-app-build-gradle文件添加如下代码"><a href="#编辑-android-app-build-gradle文件添加如下代码" class="headerlink" title="编辑 android/app/build.gradle文件添加如下代码"></a>编辑 android/app/build.gradle文件添加如下代码</h3><pre><code><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">android &#123;  </span><br><span class="line">    ...  </span><br><span class="line">    defaultConfig &#123; ... &#125;  </span><br><span class="line">    signingConfigs &#123;  </span><br><span class="line">        release &#123;  </span><br><span class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(MYAPP_RELEASE_STORE_FILE)</span>  </span></span><br><span class="line"><span class="function">            storePassword MYAPP_RELEASE_STORE_PASSWORD  </span></span><br><span class="line"><span class="function">            keyAlias xxxx </span></span><br><span class="line"><span class="function">            keyPassword xxxx  <span class="comment">// 证书密码</span></span></span><br><span class="line"><span class="function">        &#125;  </span></span><br><span class="line"><span class="function">    &#125;  </span></span><br><span class="line"><span class="function">    buildTypes </span>&#123;  </span><br><span class="line">        release &#123;  </span><br><span class="line">            ...  </span><br><span class="line">            signingConfig signingConfigs.release  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><p>关于安全性的注意事项: MAC开发可以配置免明文密码输入,通过把证书访问密码写入系统钥匙串里面。每次build时通过自动读取钥匙串中的密码。<a href="https://pilloxa.gitlab.io/posts/safer-passwords-in-gradle/" target="_blank" rel="noopener">设置链接</a>。</p>
+<h3 id="修改-android-gradle-properties"><a href="#修改-android-gradle-properties" class="headerlink" title="修改 android/gradle.properties"></a>修改 android/gradle.properties</h3><pre><code><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">android.useAndroidX=<span class="keyword">true</span></span><br><span class="line">android.enableJetifier=<span class="keyword">true</span></span><br><span class="line">MYAPP_RELEASE_STORE_PASSWORD=my-release-key.keystore <span class="comment">// 生成证书的名字</span></span><br><span class="line">MYAPP_RELEASE_KEY_ALIAS=my-key-alias <span class="comment">// 生成证书的别名</span></span><br></pre></td></tr></table></figure></code></pre><p>编辑 android/app/build.gradle文件添加如下代码<br>    <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">android &#123;  </span><br><span class="line">    ...  </span><br><span class="line">    defaultConfig &#123; ... &#125;  </span><br><span class="line">    signingConfigs &#123;  </span><br><span class="line">        release &#123;  </span><br><span class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(MYAPP_RELEASE_STORE_PASSWORD)</span>  </span></span><br><span class="line"><span class="function">            storePassword MYAPP_RELEASE_STORE_PASSWORD  </span></span><br><span class="line"><span class="function">            keyAlias xxxx </span></span><br><span class="line"><span class="function">            keyPassword xxxx  <span class="comment">// 证书密码</span></span></span><br><span class="line"><span class="function">        &#125;  </span></span><br><span class="line"><span class="function">    &#125;  </span></span><br><span class="line"><span class="function">    buildTypes </span>&#123;  </span><br><span class="line">        release &#123;  </span><br><span class="line">            ...  </span><br><span class="line">            signingConfig signingConfigs.release  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关于安全性的注意事项: MAC开发可以配置免明文密码输入,通过把证书访问密码写入系统钥匙串里面。每次build时通过自动读取钥匙串中的密码。<a href="https://pilloxa.gitlab.io/posts/safer-passwords-in-gradle/" target="_blank" rel="noopener">设置链接</a>。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">def <span class="title">getPassword</span><span class="params">(String currentUser, String keyChain)</span> </span>&#123;</span><br><span class="line">def stdout = <span class="keyword">new</span> ByteArrayOutputStream()</span><br><span class="line">def stderr = <span class="keyword">new</span> ByteArrayOutputStream()</span><br><span class="line">exec &#123;</span><br><span class="line">    commandLine <span class="string">'security'</span>, <span class="string">'-q'</span>, <span class="string">'find-generic-password'</span>, <span class="string">'-a'</span>, currentUser, <span class="string">'-s'</span>, keyChain, <span class="string">'-w'</span></span><br><span class="line">    standardOutput = stdout</span><br><span class="line">    errorOutput = stderr</span><br><span class="line">    ignoreExitValue <span class="keyword">true</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//noinspection GroovyAssignabilityCheck</span></span><br><span class="line">    stdout.toString().trim()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">def pass = getPassword(<span class="string">"android_keystore"</span>,<span class="string">"android_keystore"</span>)</span><br></pre></td></tr></table></figure>
 
 <h3 id="设置Android版本"><a href="#设置Android版本" class="headerlink" title="设置Android版本"></a>设置Android版本</h3><p><code>android/app/build.gradle</code>中,设置对应的版本号<code>versionName,versionCode</code></p>
@@ -229,8 +230,8 @@
 <h3 id="发布新版本、新应用"><a href="#发布新版本、新应用" class="headerlink" title="发布新版本、新应用"></a>发布新版本、新应用</h3><p>登录到<a href="https://developer.apple.com/" target="_blank" rel="noopener">Apple开发平台</a>,进入到 App Store Connect。<br><img src="./1587362127032.jpg" alt="pic"></p>
 <h3 id="添加新应用"><a href="#添加新应用" class="headerlink" title="添加新应用"></a>添加新应用</h3><p><img src="./1587362154218.jpg" alt="pic"></p>
 <h3 id="点击新建app，填写应用名称、平台、语言、SKU等。"><a href="#点击新建app，填写应用名称、平台、语言、SKU等。" class="headerlink" title="点击新建app，填写应用名称、平台、语言、SKU等。"></a>点击新建app，填写应用名称、平台、语言、SKU等。</h3><p><img src="./1587362167913.jpg" alt="pic"></p>
-<p>创建应用后，在App信息页面填写上App的基本信息。然后点击添加版本或平台。<br><img src="./1587362572498.jpg" alt="pic"></p>
-<p>添加要发布的版本之后， 填写版本信息。包括App预览图和截屏(有截图尺寸要求，具体参见详细的截屏要求)。版本的宣传文本、描述等重要信息。<br><img src="./1587362701488.jpg" alt="pic"></p>
+<p>创建应用后，在App信息页面填写上App的基本信息(产品需要准备好)。然后点击添加版本或平台。<br><img src="./1587362572498.jpg" alt="pic"></p>
+<p>添加要发布的版本之后， 填写版本信息。包括App预览图和截屏(有截图尺寸要求，具体参见详细的截屏要求)。版本的宣传文本、描述等重要信息。<b>(产品和UI需要准备好对应的版本更新信息、截图)</b><br><img src="./1587362701488.jpg" alt="pic"></p>
 <p>在上传完发布包之后 可以在构建版本中选择上传之后的版本。<br><img src="./1587362843340.jpg" alt="pic"><br><img src="./1587362927086.jpg" alt="pic"></p>
 <h3 id="App审核的信息"><a href="#App审核的信息" class="headerlink" title="App审核的信息"></a>App审核的信息</h3><p>如果app有登录，需要供用户名和密码，以便审核人员登录App进行验证。并提供下开发的联系信息。方便及时收到审核反馈。<br><img src="./1587363056402.jpg" alt="pic"></p>
 <p>检查当前版本的提交信息无误之后，就可以提交审核。审核的进度有邮件提醒。</p>
@@ -248,7 +249,7 @@
                 
                     <p class="copyright-item">
                         <span>本文链接:</span>
-                        <span><a href="https://cainyi.github.io/2020/04/20/distribte-app-react-native/">https://cainyi.github.io/2020/04/20/distribte-app-react-native/</a></span>
+                        <span><a href="https://cainyi.github.io/2020/03/14/distribte-app-react-native/">https://cainyi.github.io/2020/03/14/distribte-app-react-native/</a></span>
                     </p>
                     <p class="copyright-item">
                         <span>转载时须注明出处及本声明</span>
@@ -274,8 +275,10 @@
         </section>
         <section class="post-nav">
             
+                <a class="prev" rel="prev" href="/2020/03/23/JS-Hoisting/">javascript 中的变量提升</a>
             
-            <a class="next" rel="next" href="/2020/04/10/HTTPS-HTTP/">什么是HTTPS？与HTTP有的区别</a>
+            
+            <a class="next" rel="next" href="/2020/03/06/Js-this/">javascript 中的this</a>
             
         </section>
 
