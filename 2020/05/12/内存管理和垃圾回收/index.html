@@ -12,7 +12,7 @@
 
 
 
-<title>React-Fiber | Cain</title>
+<title>JavaScript内存管理和垃圾回收 | Cain</title>
 
 
 
@@ -173,21 +173,21 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">React-Fiber</h1>
+            <h1 class="post-title">JavaScript内存管理和垃圾回收</h1>
             
                 <div class="post-meta">
                     
 
                     
                         <span class="post-time">
-                        Date: <a href="#">四月 20, 2020&nbsp;&nbsp;16:06:46</a>
+                        Date: <a href="#">五月 12, 2020&nbsp;&nbsp;11:36:41</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/React/">React</a>
+                                <a href="/categories/javascript/">javascript</a>
                             
                         </span>
                     
@@ -196,40 +196,18 @@
         </header>
 
         <div class="post-content">
-            <h2 id="React-Fiber"><a href="#React-Fiber" class="headerlink" title="React-Fiber"></a>React-Fiber</h2><h3 id="React-的核心思想"><a href="#React-的核心思想" class="headerlink" title="React 的核心思想"></a>React 的核心思想</h3><p>React框架在内存中维护了一个虚拟DOM树，根据数据的变化自动更新虚拟DOM，得到一个新虚拟DOM，然后通过diff算法对新老的虚拟DOM树进对比，通过对比得出变化的部分，得到一个Change(Patch)，然后将这个Patch加入列队。最终批量更新Patch到DOM中。</p>
-<h3 id="React-16之前的不足"><a href="#React-16之前的不足" class="headerlink" title="React 16之前的不足"></a>React 16之前的不足</h3><p>React的工作过程。通过<code>render()</code>和<code>setState()</code>进行组的渲染和更新时，React主要有两个阶段:Reconclier,Renderer</p>
-<p><b>Reconclier(调和阶段)</b></p>
-<p>  React会自动向下递归，遍历新数据生成新的Virtural DOM，然后通过diff算法，找到需要变更的元素(Patch)，放到更新列队里面去。</p>
-<p><b>Renderer(渲染阶段)</b></p>
-<p>  遍历更新队列，通过调用宿主API(DOM，Native，WebGL)，更新渲染对应的元素。</p>
-<p>在<b>协调阶段</b>，采用的是递归的遍历方式，这种方式也被成为<b><code>Stack Reconciler</code></b>，主要是为了区分<b><code>Fiber Reconciler</code></b>取得一个名字。</p>
-<p><b><code>Stack Reconciler</code> 一旦任务开始进行，就无法中断，那么js将一直占用主线程，一直要等到整个虚拟DOM树计算完成才能把执行权交给渲染引擎，这样会导致用户的交互、动画等任务无法立即处理。</b></p>
-<p>为了解决这个问题，把渲染更新过程中查分为多个子任务，每次只做小部分更新，等做完看是否还有<b>剩余的时间</b>，如果有继续下一个任务；如果没有，挂起当前任务,将时间控制权交给主线程，等主线程不忙的时候在继续执行。这种策略叫做<b>Cooperative Scheduling(合作式调度)</b>, 操作系统常用任务调度策略之一。</p>
-<p>合作式调度任务主要是来分配任务的。当有更新任务的时候，不会立即做Diff操作，而是先把当前的更新送入一个Update Queue中，然后交给Scheduler去处理，Scheduler会根据当前主线程的使用情况去处理这次的Update。这种特性的实现，使用了<code>requestIdelCallback</code>Api。对于不支持的浏览器，React会加上pollyfill。</p>
-<p>浏览器是一帧一帧执行的，在两个帧之间，主线程通常会有一小段空闲时间，<code>requestIdelCallback</code>可以在这个<b>空闲期调用空闲期回调</b>，执行一些任务。</p>
-<ul>
-<li>低优先级任务由<code>requestIdelCallback</code>处理；</li>
-<li>高优先级的任务，如动画相关的由<code>requestAnimationFrame</code>处理；</li>
-<li><code>requestIdelCallback</code>可以在多个空闲期调用空闲期回调，执行任务；</li>
-<li><code>requestIdelCallback</code>方法提供 deadline，即任务执行限制时间，用来切分任务，避免长时间执行，阻塞UI渲染而导致的掉帧；</li>
-</ul>
-<p>实现可能遇到的问题：</p>
-<ul>
-<li>如何查分成子任务？</li>
-<li>一个子任务多大合适？</li>
-<li>怎么判断是否还有剩余时间？</li>
-<li>有剩余时间怎么去调度应该执行哪一个任务？</li>
-<li>没有剩余时间之前的任务该怎么办？</li>
-</ul>
-<h3 id="Fiber-架构就是用来解决这个问题的"><a href="#Fiber-架构就是用来解决这个问题的" class="headerlink" title="Fiber 架构就是用来解决这个问题的"></a>Fiber 架构就是用来解决这个问题的</h3><h4 id="Fiber-是什么？"><a href="#Fiber-是什么？" class="headerlink" title="Fiber 是什么？"></a>Fiber 是什么？</h4><p>Fiber是重新实现的堆栈帧，本质上Fiber可以理解为一个虚拟的堆栈帧，将可中断的任务拆分成多个子任务，通过按照优先级来自由调度子任务，分段更新，从而将之前的同步渲染任务改成异步渲染任务。所以理解Fiber是一种数据结构(堆栈帧),也可以理解成一种解决可中断的调用任务的一种解决方案，它的特性就是时间分片(time slicing)和暂停(supense)。<br>为了做到这些，需要将一种方法将任务分解为单元，Fiber代表一种工作单元。</p>
-<h4 id="Fiber是怎么工作的"><a href="#Fiber是怎么工作的" class="headerlink" title="Fiber是怎么工作的"></a>Fiber是怎么工作的</h4><ul>
-<li><code>React.render()</code>和<code>setState()</code>的时候开始创建更新。</li>
-<li>将创建的更新加入任务列队，等待调度。</li>
-<li>在<code>requestIdelCallback</code>空闲时执行任务。</li>
-<li>从根节点开始遍历 Fiber Node，并且构建WokeInProgress Tree。</li>
-<li>生成 <code>EffectList</code></li>
-<li>根据 <code>EffectList</code>更新DOM。</li>
-</ul>
+            <p>javascript与一些底层语言在内存处理方式有区别。底层语言有专门的内存管理接口如<code>C语言</code>，需要手动跟踪处理内存的使用情况。JavaScript 具有自动垃圾收集机制，执行环境会负责管理代码执行过程中使用的内存。但是这并不意味着<code>javascript</code>开发者不需要去关心内存问题。 如果不了解内存管理机制，可能会造成内存泄露的情况。</p>
+<h2 id="内存生命周期"><a href="#内存生命周期" class="headerlink" title="内存生命周期"></a>内存生命周期</h2><ol>
+<li>分配内存</li>
+<li>使用分配到的内存（读、写）</li>
+<li>不需要时将其释放\归还</li>
+</ol>
+<h3 id="内存的分配场景"><a href="#内存的分配场景" class="headerlink" title="内存的分配场景"></a>内存的分配场景</h3><p>下面我们来分析一下函数中局部变量的正常生命周期。</p>
+<p>内存分配：局部变量只在函数执行的过程中存在。而在这个过程中，会为局部变量在栈（或堆）内存上分配相应的空间，以便存储它们的值。</p>
+<p>内存使用：然后在函数中使用这些变量，直至函数执行结束。</p>
+<p>内存回收：此时，局部变量就没有存在的必要了，因此可以释放它们的内存以供将来使用。</p>
+<p>通常，很容易判断变量是否还有存在的必要，但并非所有情况下都这么容易就能得出结论（例如：使用闭包的时）。垃圾收集器必须跟踪哪个变量有用哪个变量没用，对于不再有用的变量打上标记，以备将来收回其占用的内存。用于标识无用变量的策略可能会因实现而异，但具体到浏览器中的实现，则通常有两个策略：标记清除 和 引用计数。</p>
+<p>所有语言第二部分都是明确的。第一和第三部分在底层语言中是明确的，但在像JavaScript这些高级语言中，大部分都是隐含的。</p>
 
         </div>
 
@@ -244,7 +222,7 @@
                 
                     <p class="copyright-item">
                         <span>本文链接:</span>
-                        <span><a href="https://cainyi.github.io/2020/04/20/React-Fiber/">https://cainyi.github.io/2020/04/20/React-Fiber/</a></span>
+                        <span><a href="https://cainyi.github.io/2020/05/12/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">https://cainyi.github.io/2020/05/12/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</a></span>
                     </p>
                     <p class="copyright-item">
                         <span>转载时须注明出处及本声明</span>
@@ -270,10 +248,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2020/05/12/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">JavaScript内存管理和垃圾回收</a>
             
-            
-            <a class="next" rel="next" href="/2020/04/10/HTTPS-HTTP/">什么是HTTPS？与HTTP有的区别</a>
+            <a class="next" rel="next" href="/2020/04/20/React-Fiber/">React-Fiber</a>
             
         </section>
 
