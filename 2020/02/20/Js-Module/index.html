@@ -6,13 +6,13 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <meta name="author" content="Cain">
+    <meta name="author" content="Vincent">
 
 
 
 
 
-<title>javascript 中的模块化 | Cain</title>
+<title>javascript 中的模块化 | Vincent</title>
 
 
 
@@ -49,7 +49,7 @@
         <header>
     <nav class="navbar">
         <div class="container">
-            <div class="navbar-header header-logo"><a href="/">Cain</a></div>
+            <div class="navbar-header header-logo"><a href="/">Vincent</a></div>
             <div class="menu navbar-right">
                 
                     <a class="menu-item" href="/archives">文章</a>
@@ -71,7 +71,7 @@
         <div class="container">
             <div class="navbar-header">
                 <div>
-                    <a href="/">Cain</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                    <a href="/">Vincent</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
                 </div>
                 <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
             </div>
@@ -227,14 +227,14 @@
 <li><p>CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。</p>
 </li>
 <li><p>CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成</p>
-<h5 id="定义模块"><a href="#定义模块" class="headerlink" title="定义模块"></a>定义模块</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// module.js</span></span><br><span class="line"><span class="keyword">let</span> name = <span class="string">'Cain chen'</span>;</span><br><span class="line"><span class="keyword">let</span> sayName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123; name, sayName &#125;</span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line">exports.sayName = sayName;</span><br></pre></td></tr></table></figure>
-<h5 id="加载模块"><a href="#加载模块" class="headerlink" title="加载模块"></a>加载模块</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 通过 require 引入依赖</span></span><br><span class="line"><span class="keyword">let</span> <span class="built_in">module</span> = <span class="built_in">require</span>(<span class="string">'./module.js'</span>);</span><br><span class="line"><span class="built_in">module</span>.sayName(); <span class="comment">//  Cain chen</span></span><br></pre></td></tr></table></figure>
+<h5 id="定义模块"><a href="#定义模块" class="headerlink" title="定义模块"></a>定义模块</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// module.js</span></span><br><span class="line"><span class="keyword">let</span> name = <span class="string">'Vincent chen'</span>;</span><br><span class="line"><span class="keyword">let</span> sayName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123; name, sayName &#125;</span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line">exports.sayName = sayName;</span><br></pre></td></tr></table></figure>
+<h5 id="加载模块"><a href="#加载模块" class="headerlink" title="加载模块"></a>加载模块</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 通过 require 引入依赖</span></span><br><span class="line"><span class="keyword">let</span> <span class="built_in">module</span> = <span class="built_in">require</span>(<span class="string">'./module.js'</span>);</span><br><span class="line"><span class="built_in">module</span>.sayName(); <span class="comment">//  Vincent chen</span></span><br></pre></td></tr></table></figure>
 
 <h5 id="module-export、exports的区别"><a href="#module-export、exports的区别" class="headerlink" title="module.export、exports的区别"></a>module.export、exports的区别</h5><ul>
 <li><p>module.exports 方法还可以单独返回一个数据类型(String、Number、Object…)，而 exports 只能返回一个 Object 对象</p>
 </li>
 <li><p>所有的 exports 对象最终都是通过 module.exports 传递执行，因此可以更确切地说，exports 是给 module.exports 添加属性和方法</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">exports.name = <span class="string">'Cain chen'</span>;</span><br><span class="line">exports.age = <span class="number">30</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">module</span>.exports); <span class="comment">// result: &#123; name: 'Cain chen', age: 30 &#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">exports.name = <span class="string">'Vincent chen'</span>;</span><br><span class="line">exports.age = <span class="number">30</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">module</span>.exports); <span class="comment">// result: &#123; name: 'Vincent chen', age: 30 &#125;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>同时用到module.export跟exports的时候</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// case1</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;</span><br><span class="line">exports.b = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">module</span>.exports); <span class="comment">// &#123; a:1 &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// case2</span></span><br><span class="line"><span class="built_in">module</span>.exports.a =<span class="number">1</span>;</span><br><span class="line">exports.b = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">module</span>.exports); <span class="comment">// &#123; a:1, b:2 &#125;</span></span><br></pre></td></tr></table></figure>
@@ -252,13 +252,13 @@
                 
                     <p class="copyright-item">
                         <span>版权属于:</span>
-                        <span>Cain</span>
+                        <span>Vincent</span>
                     </p>
                 
                 
                     <p class="copyright-item">
                         <span>本文链接:</span>
-                        <span><a href="https://cainyi.github.io/2020/02/20/Js-Module/">https://cainyi.github.io/2020/02/20/Js-Module/</a></span>
+                        <span><a href="https://vincentyi.github.io/2020/02/20/Js-Module/">https://vincentyi.github.io/2020/02/20/Js-Module/</a></span>
                     </p>
                     <p class="copyright-item">
                         <span>转载时须注明出处及本声明</span>
@@ -298,7 +298,7 @@
         </div>
         <footer id="footer" class="footer">
     <div class="copyright">
-        <span>© Cain | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+        <span>© Vincent | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
     </div>
     <script>
         var _hmt = _hmt || [];
