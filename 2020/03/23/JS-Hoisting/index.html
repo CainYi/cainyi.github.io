@@ -197,7 +197,7 @@
 
         <div class="post-content">
             <h2 id="Hoisting-提升"><a href="#Hoisting-提升" class="headerlink" title="Hoisting (提升)"></a>Hoisting (提升)</h2><h3 id="什么是变量提升"><a href="#什么是变量提升" class="headerlink" title="什么是变量提升"></a>什么是变量提升</h3><blockquote>
-<p>javasctipt的工作方式是， 先解析代码，获取代码所有被声明的变量，然后按顺序一次的运行。所有变量声明的语句会被提升到代码的头部，这就是变量提升。</p>
+<p>javascript 先解析代码，获取代码所有被声明的变量，然后按顺序依次的运行。所有变量声明的语句会被提升到代码的头部，这就是变量提升。</p>
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 实际这段代码在编译之后的顺序是</span></span><br><span class="line"><span class="keyword">var</span> a ;</span><br><span class="line">a = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br></pre></td></tr></table></figure>
 

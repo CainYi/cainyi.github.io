@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Vincent">
+
+
+
+
+
+<title>TCP/IP 知识要点 | Vincent</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Vincent</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Vincent</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">移到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">TCP/IP 知识要点</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">六月 3, 2020&nbsp;&nbsp;15:53:25</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                            
+                                <a href="/categories/das/">das</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="TCP-Transmission-Control-Protocol-传输控制协议"><a href="#TCP-Transmission-Control-Protocol-传输控制协议" class="headerlink" title="TCP (Transmission Control Protocol) 传输控制协议"></a>TCP (Transmission Control Protocol) 传输控制协议</h2><blockquote>
+<p>TCP是一个面向连接的、可靠的、基于字节流的传输层协议。</p>
+</blockquote>
+<h3 id="TCP-特点"><a href="#TCP-特点" class="headerlink" title="TCP 特点"></a>TCP 特点</h3><ol>
+<li><p>TCP/IP协议是Internet最基本的协议、Internet国际互联网络的基础，由网络层的IP协议和传输层的TCP协议组成。通俗而言：TCP负责发现传输的问题，一有问题就发出信号，要求重新传输，直到所有数据安全正确地传输到目的地。而IP是给因特网的每一台联网设备规定一个地址。</p>
+</li>
+<li><p>TCP是<code>面向连接</code>的通信协议，通过三次握手建立连接，通讯完成时要拆除连接，由于TCP是面向连接的所以只能用于端到端的通讯。TCP提供的是一种可靠的数据流服务，采用“带重传的肯定确认”技术来实现传输的可靠性。TCP还采用一种称为“滑动窗口”的方式进行流量控制，所谓窗口实际表示接收能力，用以限制发送方的发送速度。</p>
+</li>
+<li><p>TCP提供可靠性。TCP使用很多的功夫来保证连接的可靠性，TCP会精准的记录哪些数据发送了，哪些数据被对方接受了，哪些数据没有被接收到，而且会保证数据包按序到达，不允许有半点差错。</p>
+</li>
+<li><p>TCP是面向面向字节流。</p>
+</li>
+</ol>
+<h3 id="面向连接"><a href="#面向连接" class="headerlink" title="面向连接"></a>面向连接</h3><ol>
+<li><p>三次握手过程。TCP连接建立过程：</p>
+<ol>
+<li><p>第一次握手: 客户端尝:连接服务器，向服务器发送syn包（同步序列编号Synchronize Sequence Numbers），syn=j，客户端进入SYN_SEND状态等待服务器确认.</p>
+</li>
+<li><p>第二次握手：服务器接收客户端syn包并确认（ack=j+1），同时向客户端发送一个SYN包（syn=k），即SYN+ACK(Acknowledge character 确认序列号)包，此时服务器进入SYN_RECV状态.</p>
+</li>
+<li><p>第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=k+1），此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手</p>
+<p><img src="./wechatIMG1035.png" alt="jpg"></p>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>四次挥手过程。TCP连接断开过程：假设Client端发起中断连接请求，也就是发送FIN报文。Server端接到FIN报文后，意思是说”我Client端没有数据要发给你了”，但是如果你还有数据没有发送完成，则不必急着关闭Socket，可以继续发送数据。所以你先发送ACK，”告诉Client端，你的请求我收到了，但是我还没准备好，请继续你等我的消息”。这个时候Client端就进入FIN_WAIT状态，继续等待Server端的FIN报文。当Server端确定数据已发送完成，则向Client端发送FIN报文，”告诉Client端，好了，我这边数据发完了，准备好关闭连接了”。Client端收到FIN报文后，”就知道可以关闭连接了，但是他还是不相信网络，怕Server端不知道要关闭，所以发送ACK后进入TIME_WAIT状态，如果Server端没有收到ACK则可以重传。“，Server端收到ACK后，”就知道可以断开连接了”。Client端等待了2MSL后依然没有收到回复，则证明Server端已正常关闭，那好，我Client端也可以关闭连接了。Ok，TCP连接就这样关闭了！</li>
+</ol>
+<h3 id="TCP连接建立过程中为什么是三次握手？"><a href="#TCP连接建立过程中为什么是三次握手？" class="headerlink" title="TCP连接建立过程中为什么是三次握手？"></a>TCP连接建立过程中为什么是三次握手？</h3><p>在只有两次“握手”的情形下，假设Client想跟Server建立连接，但是却因为中途连接请求的数据报丢失了，故Client端不得不重新发送一遍；这个时候Server端仅收到一个连接请求，因此可以正常的建立连接。但是，有时候Client端重新发送请求不是因为数据报丢失了，而是有可能数据传输过程因为网络并发量很大在某结点被阻塞了，这种情形下Server端将先后收到2次请求，并持续等待两个Client请求向他发送数据…问题就在这里，Client端实际上只有一次请求，而Server端却有2个响应，极端的情况可能由于Client端多次重新发送请求数据而导致Server端最后建立了N多个响应在等待，因而造成极大的资源浪费！所以，“三次握手”很有必要！</p>
+<h3 id="TCP断开连接过程中为什么是四次挥手？"><a href="#TCP断开连接过程中为什么是四次挥手？" class="headerlink" title="TCP断开连接过程中为什么是四次挥手？"></a>TCP断开连接过程中为什么是四次挥手？</h3><p>试想一下，假如现在你是客户端你想断开跟Server的所有连接该怎么做？第一步，你自己先停止向Server端发送数据，并等待Server的回复。但事情还没有完，虽然你自身不往Server发送数据了，但是因为你们之前已经建立好平等的连接了，所以此时他也有主动权向你发送数据；故Server端还得终止主动向你发送数据，并等待你的确认。其实，说白了就是保证双方的一个合约的完整执行！</p>
+<h3 id="TCP三次握手、传输数据、四次挥手过程"><a href="#TCP三次握手、传输数据、四次挥手过程" class="headerlink" title="TCP三次握手、传输数据、四次挥手过程"></a>TCP三次握手、传输数据、四次挥手过程</h3><p><img src="./1591234644128.jpg" alt="jpg"></p>
+<h3 id="三次握手过程中可以携带数据么？"><a href="#三次握手过程中可以携带数据么？" class="headerlink" title="三次握手过程中可以携带数据么？"></a>三次握手过程中可以携带数据么？</h3><p>第三次握手的时候，可以携带。前两次握手不能携带数据。</p>
+<p>如果前两次握手能够携带数据，那么一旦有人想攻击服务器，那么他只需要在第一次握手中的 SYN 报文中放大量数据，那么服务器势必会消耗更多的时间和内存空间去处理这些数据，增大了服务器被攻击的风险。</p>
+<p>第三次握手的时候，客户端已经处于ESTABLISHED状态，并且已经能够确认服务器的接收、发送能力正常，这个时候相对安全了，可以携带数据。</p>
+<h3 id="使用的TCP协议"><a href="#使用的TCP协议" class="headerlink" title="使用的TCP协议"></a>使用的TCP协议</h3><p>FTP（文件传输协议）、Telnet（远程登录协议）、SMTP（简单邮件传输协议）、POP3（和SMTP相对，用于接收邮件）、HTTP协议、HTTPS协议。</p>
+<h2 id="IP-网际协议（Internet-Protocol）"><a href="#IP-网际协议（Internet-Protocol）" class="headerlink" title="IP - 网际协议（Internet Protocol）"></a>IP - 网际协议（Internet Protocol）</h2><p>IP层接收由更低层（网络接口层例如以太网设备驱动程序）发来的数据包，并把该数据包发送到更高层—TCP或UDP层；相反，IP层也把从TCP或UDP层接收来的数据包传送到更低层。IP数据包是不可靠的，因为IP并没有做任何事情来确认数据包是否按顺序发送的或者有没有被破坏，IP数据包中含有发送它的主机的地址（源地址）和接收它的主机的地址（目的地址）</p>
+<h3 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h3><p>每个计算机必须有一个 IP 地址才能够连入因特网。<br>每个 IP 包必须有一个地址才能够发送到另一台计算机。</p>
+<h3 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h3><p>12 个阿拉伯数字很难记忆。使用一个名称更容易。<br>用于 TCP/IP 地址的名字被称为域名。runoob.com 就是一个域名。<br>当你键入一个像 <a href="http://www.runoob.com" target="_blank" rel="noopener">http://www.runoob.com</a> 这样的域名，域名会被一种 DNS 程序翻译为数字。</p>
+<h3 id="协议族（所有协议的概述）"><a href="#协议族（所有协议的概述）" class="headerlink" title="协议族（所有协议的概述）"></a>协议族（所有协议的概述）</h3><p>TCP - 传输控制协议</p>
+<p>TCP 用于从应用程序到网络的数据传输控制。</p>
+<p>TCP 负责在数据传送之前将它们分割为 IP 包，然后在它们到达的时候将它们重组。<br>IP - 网际协议（Internet Protocol）</p>
+<p>IP 负责计算机之间的通信。</p>
+<p>IP 负责在因特网上发送和接收数据包。<br>HTTP - 超文本传输协议(Hyper Text Transfer Protocol)</p>
+<p>HTTP 负责 web 服务器与 web 浏览器之间的通信。</p>
+<p>HTTP 用于从 web 客户端（浏览器）向 web 服务器发送请求，并从 web 服务器向 web 客户端返回内容（网页）。<br>HTTPS - 安全的 HTTP（HTTP Secure）</p>
+<p>HTTPS 负责在 web 服务器和 web 浏览器之间的安全通信。</p>
+<p>作为有代表性的应用，HTTPS 会用于处理信用卡交易和其他的敏感数据。<br>SSL - 安全套接字层（Secure Sockets Layer）</p>
+<p>SSL 协议用于为安全数据传输加密数据。<br>SMTP - 简易邮件传输协议（Simple Mail Transfer Protocol）</p>
+<p>SMTP 用于电子邮件的传输。<br>MIME - 多用途因特网邮件扩展（Multi-purpose Internet Mail Extensions）</p>
+<p>MIME 协议使 SMTP 有能力通过 TCP/IP 网络传输多媒体文件，包括声音、视频和二进制数据。<br>IMAP - 因特网消息访问协议（Internet Message Access Protocol）</p>
+<p>IMAP 用于存储和取回电子邮件。<br>POP - 邮局协议（Post Office Protocol）</p>
+<p>POP 用于从电子邮件服务器向个人电脑下载电子邮件。<br>FTP - 文件传输协议（File Transfer Protocol）</p>
+<p>FTP 负责计算机之间的文件传输。<br>NTP - 网络时间协议（Network Time Protocol）</p>
+<p>NTP 用于在计算机之间同步时间（钟）。<br>DHCP - 动态主机配置协议（Dynamic Host Configuration Protocol）</p>
+<p>DHCP 用于向网络中的计算机分配动态 IP 地址。<br>SNMP - 简单网络管理协议（Simple Network Management Protocol）</p>
+<p>SNMP 用于计算机网络的管理。<br>LDAP - 轻量级的目录访问协议（Lightweight Directory Access Protocol）</p>
+<p>LDAP 用于从因特网搜集关于用户和电子邮件地址的信息。<br>ICMP - 因特网消息控制协议（Internet Control Message Protocol）</p>
+<p>ICMP 负责网络中的错误处理。<br>ARP - 地址解析协议（Address Resolution Protocol）</p>
+<p>ARP - 用于通过 IP 来查找基于 IP 地址的计算机网卡的硬件地址。MAC地址<br>RARP - 反向地址转换协议（Reverse Address Resolution Protocol）</p>
+<p>RARP 用于通过 IP 查找基于硬件地址的计算机网卡的 IP 地址。<br>BOOTP - 自举协议（Boot Protocol）</p>
+<p>BOOTP 用于从网络启动计算机。<br>PPTP - 点对点隧道协议（Point to Point Tunneling Protocol）</p>
+<p>PPTP 用于私人网络之间的连接（隧道）。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>版权属于:</span>
+                        <span>Vincent</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://vincentyi.github.io/2020/06/03/TCP/">https://vincentyi.github.io/2020/06/03/TCP/</a></span>
+                    </p>
+                    <p class="copyright-item">
+                        <span>转载时须注明出处及本声明</span>
+                    </p>
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"># 计算机网络</a>
+                    
+                        <a href="/tags/TCP/"># TCP</a>
+                    
+                        <a href="/tags/%E4%BC%A0%E8%BE%93%E5%B1%82/"># 传输层</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/05/06/GarbageCollecation/">JavaScript内存管理和垃圾回收</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Vincent | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?1c25e4411359eec4e07a54481d7afecf";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</footer>
+
+    </div>
+</body>
+</html>
