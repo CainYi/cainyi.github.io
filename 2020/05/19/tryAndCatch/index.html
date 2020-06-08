@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Vincent">
+
+
+
+
+
+<title>try catch throw | vincent</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Vincent</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Vincent</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">移到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">try catch throw</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">五月 19, 2020&nbsp;&nbsp;14:13:31</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/javascript/">javascript</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//可能会导致错误的代码</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="comment">//在错误发生时怎么处理</span></span><br><span class="line">&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">     <span class="comment">//即使报错始终执行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<!-- try...catch 可以测试代码中的错误。try 部分包含需要运行的代码，而 catch 部分包含错误发生时运行的代码。 --> 
+
+<p>如果try块中的任何代码发生了错误，就会立即退出代码执行过程，然后接着执行catch块，此时，catch块会接受到一个包含错误信息的对象。都有一个保存着错误消息的message属性。</p>
+<!-- ## Javascript 错误 -->
+<p>当Javascript引擎执行代码是，发生的错误。可能是语法错误，通常是程序员造成的编码错误或者错别字，也可能是来自服务器或者用户的错误输出而导致的错误等。</p>
+<p>能被 try catch 捕捉到的异常，必须是在报错的时候，线程执行已经进入 try catch 代码块，且处在 try catch 里面，这个时候才能被捕捉到。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">         <span class="built_in">console</span>.log(a.b);  </span><br><span class="line">    &#125;, <span class="number">100</span>)</span><br><span class="line">&#125;<span class="keyword">catch</span>(e)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'error'</span>,e);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">111</span>);</span><br><span class="line"><span class="comment">// 111</span></span><br><span class="line"><span class="comment">// Uncaught ReferenceError: a is not defined</span></span><br></pre></td></tr></table></figure>
+
+<p>setTimeout里面报错，实际是100ms之后执行的代码报错，此时try-catch已经执行完成，console.log都已经被执行完了，所以没有办法捕获到异常。</p>
+<h3 id="finally"><a href="#finally" class="headerlink" title="finally"></a>finally</h3><p> finally在try-catch语句中是可选的，但是finally子句一经使用，其代码无论如何都会执行。无论try或者catch语句块中包含什么代码，包括return语句，都不会阻止finally子句的执行。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testFinally</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    &#125;<span class="keyword">catch</span>(error)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">//</span></span><br><span class="line">    &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从表面上看，这个函数会返回2，执行这个函数且不会报错，但是由于最后还有一个finally子句，结果会导致该return语句忽略，所以这个函数只能返回0。</p>
+<blockquote>
+<p>切记，只要代码中包含finally子句，那么无论try还是catch语句块中的return都将被忽略。所以在使用finally之前，需要想清楚你的代码应该符合你的业务逻辑。</p>
+</blockquote>
+<!-- [参考链接](https://juejin.im/post/5ea8e2d65188256d8d605b2d) -->
+
+<h3 id="抛出错误"><a href="#抛出错误" class="headerlink" title="抛出错误"></a>抛出错误</h3><p><code>throw</code>操作符，用于随时抛出自定义错误。抛出错误时，必须给<code>throw</code>操作符指定一个值。这个值的类型没有限制。</p>
+<p>在遇到<code>throw</code>操作符是，代码会立即停止执行。仅当有try-catch语句捕获到被抛出的值时，代码才能继续执行。</p>
+<p>对于浏览器的兼容问，可以高效的定位错误的原因。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">process</span>(<span class="params">values</span>)</span>&#123;</span><br><span class="line">    values.sort();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; values.length; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(values[i]&gt;<span class="number">100</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> values[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果执行process这个函数是，传入的values是一个string，那么调用sort()就会报错，对此，不同的浏览器会给出不同的错误消息，但都不是特别明确；</p>
+<ul>
+<li>在IE下：属性或方法不存在</li>
+<li>在Firefox下：values.sort()不是一个函数</li>
+<li>在Safari下：值undefined不是对象</li>
+<li>在Chrome下：对象名没有方法’sort’</li>
+<li>在Opera下：类型不匹配<br>等等</li>
+</ul>
+<p>为了兼容方便调试和开发，可以在这个方法中加入一个类型检测</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">process1</span>(<span class="params">values</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!(values <span class="keyword">instanceof</span> <span class="built_in">Array</span>))&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span> (<span class="string">"process1(): Argument must be an Array"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样重写函数后，如果values的参数类型不是Array，就会抛出一个错误。</p>
+<p>抛出错误与使用try-catch。只应该捕获哪些我们确切地知道该如何处理的错误。捕获错误的目的在于避免浏览器已默认方式处理它们，而抛出错误的目的在于提错误发生的具体原因。</p>
+<h3 id="常见的错误类型"><a href="#常见的错误类型" class="headerlink" title="常见的错误类型"></a>常见的错误类型</h3><p>错误处理的核心，是首先要知道代码里发生什么错误。错误只会在代码运行期间出现，一般来说，我们需要关注三种错误：</p>
+<ul>
+<li>类型转换错误</li>
+<li>数据类型错误</li>
+<li>通信错误</li>
+</ul>
+<p>这些错误分别会在特定的模式下或者没有对值进行足够的检查的情况下发生。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>版权属于:</span>
+                        <span>Vincent</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://wekic.com/2020/05/19/tryAndCatch/">https://wekic.com/2020/05/19/tryAndCatch/</a></span>
+                    </p>
+                    <p class="copyright-item">
+                        <span>转载时须注明出处及本声明</span>
+                    </p>
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/"># 错误处理</a>
+                    
+                        <a href="/tags/%E9%94%99%E8%AF%AF%E6%8D%95%E8%8E%B7/"># 错误捕获</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/05/26/TCP/">TCP/IP 知识要点</a>
+            
+            
+            <a class="next" rel="next" href="/2020/05/06/GarbageCollecation/">JavaScript内存管理和垃圾回收</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Vincent | <a href="" target="_blank">湘ICP备16003524号 </a></span>
+    </div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?1c25e4411359eec4e07a54481d7afecf";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</footer>
+
+    </div>
+</body>
+</html>
