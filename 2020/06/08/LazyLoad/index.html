@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Vincent">
+
+
+
+
+
+<title>延迟加载 | vincent</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Vincent</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Vincent</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">移到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">延迟加载</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">六月 8, 2020&nbsp;&nbsp;15:02:52</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="延迟加载"><a href="#延迟加载" class="headerlink" title="延迟加载"></a>延迟加载</h2><p>延迟加载是一种在加载页面时，延迟加载非关键资源的一种方法，而这些非关键资源则在需要时才进行加载，就图像而言，‘非关键’通常指的是‘屏幕外’。</p>
+<ul>
+<li>延迟加载图像和视频时，可以减少初始页面加载时间、初始页面负载以及系统资源使用量，所有这一切都会对性能产生积极影响。</li>
+<li>通常来说加载网页时，浏览器会请求所有的图像，而不管它们实在视窗还是在页面的更深处并且不可见。延迟加载允许我们加载可见的图像，并且在用户滚动时按需异步加载其他的图片。这减少了负载请求的数据，并可以大大加快该过程。</li>
+</ul>
+<h2 id="延迟加载图像"><a href="#延迟加载图像" class="headerlink" title="延迟加载图像"></a>延迟加载图像</h2><h3 id="HTML中的延迟加载内联图像"><a href="#HTML中的延迟加载内联图像" class="headerlink" title="HTML中的延迟加载内联图像"></a>HTML中的延迟加载内联图像</h3><ol>
+<li><p><code>&lt;img&gt;</code>元素中使用的图像时最常见的延迟加载对象。延迟加载<code>&lt;img&gt;</code>元素时，使用javascript来检查其是否在视口中，如果元素在视口中，则其src(有时srcset)属性中就会填充所需图像内容的网址。</p>
+</li>
+<li><p>使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noopener">Intersection Observer</a>。 之前写过的延迟加载代码，有的是使用scroll或resize等时间处理程序来完成任务。这种方式的有点就是各浏览器之间的兼容性最好。但现在浏览器支持通过<code>Intersection Observer API</code> 来检查元素的可见性。这中方式的性能和效率更好。当然并非所有的浏览器都支持<code>Intersection Observer</code>。</p>
+</li>
+</ol>
+<p>与依赖于各种事件处理程序的代码相比，<code>Intersection Observer</code>更容易使用和阅读。只需要注册一个Observer即可监听视元素，就不需要编写冗余的元素可见性检测代码。只需要决定元素可见时需要做什么即可。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"lazy"</span> <span class="attr">src</span>=<span class="string">"placeholder-image.jpg"</span> <span class="attr">data-src</span>=<span class="string">"image-to-lazy-load-1x.jpg"</span> <span class="attr">data-srcset</span>=<span class="string">"image-to-lazy-load-2x.jpg 2x, image-to-lazy-load-1x.jpg 1x"</span> <span class="attr">alt</span>=<span class="string">"I'm an image!"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>需要关注的三部分：</p>
+<pre><code>1. class，javascript中选择元素时需要使用的类选择器。
+2. src，引用页面最初加载时显示的占位符图片。
+3. data-src和data-srcset，属于占位属性，其中包含元素进入视口后要加载的图片的网址。</code></pre><p>接下来使用<code>Intersection Observer</code>实现延迟加载图片。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'DOMContentLoaded'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> lazyImages = [].slice.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">'img.lazy'</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="string">"IntersectionObserver"</span> <span class="keyword">in</span> <span class="built_in">window</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> lazyImageObserver = <span class="keyword">new</span> IntersectionObserver(<span class="function"><span class="keyword">function</span>(<span class="params">entries,observer</span>)</span>&#123;</span><br><span class="line">            entries.forEach(<span class="function"><span class="params">entry</span>=&gt;</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(entry.isIntersecting)&#123;</span><br><span class="line">                    <span class="keyword">let</span> lazyImage = entry.target;</span><br><span class="line">                    lazyImage.src = lazyImage.data.src;</span><br><span class="line">                    lazyImage.srcset = lazyImage.data.srcset;</span><br><span class="line">                    lazyImage.classList.remove(<span class="string">'lazy'</span>);</span><br><span class="line">                    lazyImageObserver.unobserve(lazyImage);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">        lazyImages.forEach(<span class="function"><span class="params">lazyImage</span> =&gt;</span> &#123;</span><br><span class="line">            lazyImageObserver.observer(lazyImage)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">//  对不支持Intersection Observer 其他处理方式</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在<code>DOMContentLoaded</code>事件中，脚本会查询DOM来获取雷属性为<code>lazy</code>的所有<code>&lt;img&gt;</code>元素。<br><a href="https://codepen.io/malchata/pen/YeMyrQ" target="_blank" rel="noopener">实现效果</a><br><code>Intersection Observer</code>来做延迟加载，但是对兼容性要求严格，我们可以使用<a href="https://github.com/w3c/IntersectionObserver/tree/master/polyfill" target="_blank" rel="noopener">polyfill</a>来做兼容处理。但是也可以使用<code>scroll</code>和<code>resize</code>的代码，<code>getBoundingClientRect</code>配合使用的<code>orientationchange</code>事件处理程序，来确定元素是否在视口中。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">"DOMContentLoaded"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> lazyImages = [].slice.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">"img.lazy"</span>));</span><br><span class="line">  <span class="keyword">let</span> active = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> lazyLoad = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (active === <span class="literal">false</span>) &#123;</span><br><span class="line">      active = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">      setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        lazyImages.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">lazyImage</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> ((lazyImage.getBoundingClientRect().top &lt;= <span class="built_in">window</span>.innerHeight &amp;&amp; lazyImage.getBoundingClientRect().bottom &gt;= <span class="number">0</span>) &amp;&amp; getComputedStyle(lazyImage).display !== <span class="string">"none"</span>) &#123;</span><br><span class="line">            lazyImage.src = lazyImage.dataset.src;</span><br><span class="line">            lazyImage.srcset = lazyImage.dataset.srcset;</span><br><span class="line">            lazyImage.classList.remove(<span class="string">"lazy"</span>);</span><br><span class="line"></span><br><span class="line">            lazyImages = lazyImages.filter(<span class="function"><span class="keyword">function</span>(<span class="params">image</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">return</span> image !== lazyImage;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (lazyImages.length === <span class="number">0</span>) &#123;</span><br><span class="line">              <span class="built_in">document</span>.removeEventListener(<span class="string">"scroll"</span>, lazyLoad);</span><br><span class="line">              <span class="built_in">window</span>.removeEventListener(<span class="string">"resize"</span>, lazyLoad);</span><br><span class="line">              <span class="built_in">window</span>.removeEventListener(<span class="string">"orientationchange"</span>, lazyLoad);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        active = <span class="literal">false</span>;</span><br><span class="line">      &#125;, <span class="number">200</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">document</span>.addEventListener(<span class="string">"scroll"</span>, lazyLoad);</span><br><span class="line">  <span class="built_in">window</span>.addEventListener(<span class="string">"resize"</span>, lazyLoad);</span><br><span class="line">  <span class="built_in">window</span>.addEventListener(<span class="string">"orientationchange"</span>, lazyLoad);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>此代码在 scroll 事件处理程序中使用 getBoundingClientRect 来检查是否有任何 img.lazy 元素处于视口中。 使用 setTimeout 调用来延迟处理，active 变量则包含处理状态，用于限制函数调用。 延迟加载图像时，这些元素随即从元素数组中移除。 当元素数组的 length 达到 0 时，滚动事件处理程序代码随即移除。 您可在此 CodePen 示例中，查看代码的实际运行情况。</p>
+<h3 id="css中的图像"><a href="#css中的图像" class="headerlink" title="css中的图像"></a>css中的图像</h3><p>将通过设置css的background-color属性了调用图片，预加载时不考虑可见性的<code>&lt;img&gt;</code>不同，css中的图片加载行为是建立在更多推测之上。构建文档和CSSOM以及渲染树后，浏览器会先检查CSS以何种方式适应于文档，再请求外部资源。吐过浏览器确定设计某外部资源成的CSS规则不适用于当前构建的文档，则浏览器将不会请求该资源。</p>
+<p>这种推测性行为来延迟CSS中的图片加载，方法是使用Javascript来确定元素在视口内，然后将一个类应用于该元素，已应用背景图像的样式。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"lazy-background"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Here's a hero heading to get your attention!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>Here's hero copy to convince you to buy a thing!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/buy-a-thing"</span>&gt;</span>Buy a thing!<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>div.lazy-background</code>元素通常包含有某些CSS调用的大型背景图片。在延迟加载中，可以通过visible来隔离<code>div.lazy-background</code>元素的<code>background-color</code>属性。当元素进入视口时再对其添加这个类。</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.lazy-background</span> &#123;</span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">url</span>(<span class="string">"hero-placeholder.jpg"</span>); <span class="comment">/* Placeholder image */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.lazy-background</span><span class="selector-class">.visible</span> &#123;</span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">url</span>(<span class="string">"hero.jpg"</span>); <span class="comment">/* The final image */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过元素是否在视口内(<code>Intersection Observer</code>)，如果在视口内，则对 <code>div.lazy-background</code>元素添加<code>visible</code>类加载图像；</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">"DOMContentLoaded"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> lazyBackgrounds = [].slice.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">".lazy-background"</span>));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="string">"IntersectionObserver"</span> <span class="keyword">in</span> <span class="built_in">window</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> lazyBackgroundObserver = <span class="keyword">new</span> IntersectionObserver(<span class="function"><span class="keyword">function</span>(<span class="params">entries, observer</span>) </span>&#123;</span><br><span class="line">      entries.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">entry</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (entry.isIntersecting) &#123;</span><br><span class="line">          entry.target.classList.add(<span class="string">"visible"</span>);</span><br><span class="line">          lazyBackgroundObserver.unobserve(entry.target);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    lazyBackgrounds.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">lazyBackground</span>) </span>&#123;</span><br><span class="line">      lazyBackgroundObserver.observe(lazyBackground);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="延迟加载视频"><a href="#延迟加载视频" class="headerlink" title="延迟加载视频"></a>延迟加载视频</h2><p>在正常情况下加载视屏时，我们使用的是<code>&lt;video&gt;</code>元素。</p>
+<h3 id="视频不需要自动播放"><a href="#视频不需要自动播放" class="headerlink" title="视频不需要自动播放"></a>视频不需要自动播放</h3><p>使用度量none的<code>preload</code>属性来阻止浏览器预加载任何视频数据。<code>poster</code>属性提供占位符。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">controls</span> <span class="attr">preload</span>=<span class="string">"none"</span> <span class="attr">poster</span>=<span class="string">"one-does-not-simply-placeholder.jpg"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">source</span> <span class="attr">src</span>=<span class="string">"one-does-not-simply.webm"</span> <span class="attr">type</span>=<span class="string">"video/webm"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">source</span> <span class="attr">src</span>=<span class="string">"one-does-not-simply.mp4"</span> <span class="attr">type</span>=<span class="string">"video/mp4"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">video</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="视频代替GIF"><a href="#视频代替GIF" class="headerlink" title="视频代替GIF"></a>视频代替GIF</h3><p>虽然动画GIF应用广泛，但其在很多方面的表现均不如视频，尤其是在输出文件大小方面。动画GIF的数据大小可达数兆字节，而视觉效果相当的视频往往很小。</p>
+<p>gif图片加载时会自动播放，并且会循环播放而且没有声音。</p>
+<p>使用 <code>&lt;video&gt;</code> 元素进行替代类似于：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">autoplay</span> <span class="attr">muted</span> <span class="attr">loop</span> <span class="attr">playsinline</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">source</span> <span class="attr">src</span>=<span class="string">"one-does-not-simply.webm"</span> <span class="attr">type</span>=<span class="string">"video/webm"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">source</span> <span class="attr">src</span>=<span class="string">"one-does-not-simply.mp4"</span> <span class="attr">type</span>=<span class="string">"video/mp4"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">video</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>autoplay、muted 和 loop 属性的含义不言而喻，而 playsinline 是在 iOS 中进行自动播放所必需。可以跨平台使用的“视频即 GIF”替代方式。Chrome 会自动延迟加载视频，但并不是所有浏览器都会提供这种优化行为。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">autoplay</span> <span class="attr">muted</span> <span class="attr">loop</span> <span class="attr">playsinline</span> <span class="attr">width</span>=<span class="string">"610"</span> <span class="attr">height</span>=<span class="string">"254"</span> <span class="attr">poster</span>=<span class="string">"one-does-not-simply.jpg"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">source</span> <span class="attr">data-src</span>=<span class="string">"one-does-not-simply.webm"</span> <span class="attr">type</span>=<span class="string">"video/webm"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">source</span> <span class="attr">data-src</span>=<span class="string">"one-does-not-simply.mp4"</span> <span class="attr">type</span>=<span class="string">"video/mp4"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">video</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>添加了 poster 属性，您可以使用该属性指定占位符以占用 <code>&lt;video&gt;</code> 元素的空间，直到延迟加载视频为止。 与上文中的 <code>&lt;img&gt;</code> 延迟加载示例一样，我们将视频网址存放在每个 <source> 元素的 data-src 属性中。 然后将使用与上文基于 Intersection Observer 的图像延迟加载示例类似。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">"DOMContentLoaded"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> lazyVideos = [].slice.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">"video.lazy"</span>));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="string">"IntersectionObserver"</span> <span class="keyword">in</span> <span class="built_in">window</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> lazyVideoObserver = <span class="keyword">new</span> IntersectionObserver(<span class="function"><span class="keyword">function</span>(<span class="params">entries, observer</span>) </span>&#123;</span><br><span class="line">      entries.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">video</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (video.isIntersecting) &#123;</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">var</span> source <span class="keyword">in</span> video.target.children) &#123;</span><br><span class="line">            <span class="keyword">var</span> videoSource = video.target.children[source];</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> videoSource.tagName === <span class="string">"string"</span> &amp;&amp; videoSource.tagName === <span class="string">"SOURCE"</span>) &#123;</span><br><span class="line">              videoSource.src = videoSource.dataset.src;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          video.target.load();</span><br><span class="line">          video.target.classList.remove(<span class="string">"lazy"</span>);</span><br><span class="line">          lazyVideoObserver.unobserve(video.target);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    lazyVideos.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">lazyVideo</span>) </span>&#123;</span><br><span class="line">      lazyVideoObserver.observe(lazyVideo);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>延迟加载 <code>&lt;video&gt;</code>元素时，我们需要对所有的 <code>&lt;source&gt;</code>子元素进行迭代，并将其 data-src 属性更改为 src 属性。 完成该操作后，必须通过调用该元素的 load 方法触发视频加载，然后该媒体就会根据 autoplay 属性开始自动播放。</p>
+<h3 id="延迟加载库"><a href="#延迟加载库" class="headerlink" title="延迟加载库"></a>延迟加载库</h3><p><a href="https://developers.google.com/web/fundamentals/performance/lazy-loading-guidance/images-and-video#%E8%A7%86%E9%A2%91%E4%B8%8D%E8%87%AA%E5%8A%A8%E6%92%AD%E6%94%BE" target="_blank" rel="noopener">参考链接</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>版权属于:</span>
+                        <span>Vincent</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://wekic.com/2020/06/08/LazyLoad/">https://wekic.com/2020/06/08/LazyLoad/</a></span>
+                    </p>
+                    <p class="copyright-item">
+                        <span>转载时须注明出处及本声明</span>
+                    </p>
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"># 性能优化</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/06/05/UDP/">了解UDP</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Vincent | <a href="" target="_blank">湘ICP备16003524号 </a></span>
+    </div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?1c25e4411359eec4e07a54481d7afecf";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</footer>
+
+    </div>
+</body>
+</html>
