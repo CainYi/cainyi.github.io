@@ -12,7 +12,7 @@
 
 
 
-<title>了解UDP | vincent</title>
+<title>理解http1.x、http 2.0、http3.0 | vincent</title>
 
 
 
@@ -173,50 +173,81 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">了解UDP</h1>
+            <h1 class="post-title">理解http1.x、http 2.0、http3.0</h1>
             
                 <div class="post-meta">
                     
 
                     
                         <span class="post-time">
-                        Date: <a href="#">六月 5, 2020&nbsp;&nbsp;20:39:19</a>
+                        Date: <a href="#">六月 9, 2020&nbsp;&nbsp;10:43:44</a>
                         </span>
                     
-                    
-                        <span class="post-category">
-                    Category:
-                            
-                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-                            
-                                <a href="/categories/TCP-IP/">TCP/IP</a>
-                            
-                        </span>
                     
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h2 id="UDP-简介"><a href="#UDP-简介" class="headerlink" title="UDP 简介"></a>UDP 简介</h2><p>UDP(User Datagram Protocol)用户数据报协议，是OSI(Open System Interconnection，开放式系统互联)参考模型中一种无连接的传输层协议，提供面向事务的简单不可靠信息传送服务。</p>
-<p>UDP协议与TCP协议一样用于处理数据包，在OSI模型中，两者都位于传输层，处于IP协议的上一层。UDP有不提供数据包分组、组装和不能对数据包进行排序的缺点，也就是说，当报文发送之后，是无法得知其是否安全完整到达的。UDP用来支持那些需要在计算机之间传输数据的网络应用。包括网络视频会议系统在内的众多的客户/服务器模式的网络应用都需要使用UDP协议。UDP协议从问世至今已经被使用了很多年，虽然其最初的光彩已经被一些类似协议所掩盖，但即使在今天UDP仍然不失为一项非常实用和可行的网络传输层协议。</p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
-<li><p>UDP是一个无连接协议，传输数据之前源端和终端不建立连接，当它想传送时就简单地去抓取来自应用程序的数据，并尽可能快地把它扔到网络上。在发送端，UDP传送数据的速度仅仅是受应用程序生成数据的速度、计算机的能力和传输带宽的限制；在接收端，UDP把每个消息段放在队列中，应用程序每次从队列中读一个消息段。</p>
+            <h2 id="http2-0"><a href="#http2-0" class="headerlink" title="http2.0"></a>http2.0</h2><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>采用二进制格式而非文本格式；</p>
+<p>完全多路复用，而非有序并阻塞的、只需一个连接即可实现并行；</p>
+<p>使用报头压缩，降低开销</p>
+<p>服务器推送</p>
+<h3 id="二进制协议"><a href="#二进制协议" class="headerlink" title="二进制协议"></a>二进制协议</h3><ul>
+<li>HTTP/1.1 版的头信息肯定是文本（ASCII编码），数据体可以是文本，也可以是二进制。HTTP/2 则是一个彻底的二进制协议，头信息和数据体都是二进制，并且统称为”帧”：头信息帧和数据帧。</li>
+<li>二进制协议解析起来更高效、“线上”更紧凑，更重要的是错误更少。</li>
+</ul>
+<h2 id="完全多路复用"><a href="#完全多路复用" class="headerlink" title="完全多路复用"></a>完全多路复用</h2><p>HTTP/2 复用TCP连接，在一个连接里，客户端和浏览器都可以同时发送多个请求或回应，而且不用按照顺序一一对应，这样就避免了”队头堵塞”</p>
+<h3 id="报头压缩"><a href="#报头压缩" class="headerlink" title="报头压缩"></a>报头压缩</h3><p>HTTP 协议是没有状态，导致每次请求都必须附上所有信息。所以，请求的很多头字段都是重复的，比如Cookie，一样的内容每次请求都必须附带，这会浪费很多带宽，也影响速度。</p>
+<p>对于相同的头部，不必再通过请求发送，只需发送一次；</p>
+<p>HTTP/2 对这一点做了优化，引入了头信息压缩机制；</p>
+<p>一方面，头信息使用gzip或compress压缩后再发送；</p>
+<p>另一方面，客户端和服务器同时维护一张头信息表，所有字段都会存入这个表，产生一个索引号，之后就不发送同样字段了，只需发送索引号。</p>
+<p>具体步骤: </p>
+<blockquote>
+<p>维护一份相同的静态字典(static table)，包含常见的头部名称，以及特别常见的头部名称与值的组合； 维护一份相同的动态字典(Dynamic table)，可以动态的添加内容； 支持基于静态哈夫曼哈表的哈夫曼编码(Huffman Coding);</p>
+</blockquote>
+<h3 id="服务器推送"><a href="#服务器推送" class="headerlink" title="服务器推送"></a>服务器推送</h3><p>HTTP/2 允许服务器未经请求，主动向客户端发送资源；<br>通过推送那些服务器任务客户端将会需要的内容到客户端的缓存中，避免往返的延迟。</p>
+<h2 id="http1-1："><a href="#http1-1：" class="headerlink" title="http1.1："></a>http1.1：</h2><h3 id="改进点："><a href="#改进点：" class="headerlink" title="改进点："></a>改进点：</h3><ul>
+<li><p>持久连接</p>
+<p>  引入了持久连接，即TCP连接默认不关闭，可以被多个请求复用，不用声明Connection: keep-alive(对于同一个域名，大多数浏览器允许同时建立6个持久连接)</p>
 </li>
-<li><p>由于传输数据不建立连接，因此也就不需要维护连接状态，包括收发状态等，因此一台服务机可同时向多个客户机传输相同的消息。</p>
+<li><p>客户端Cookic、安全机制</p>
 </li>
-<li><p>UDP信息包的标题很短，只有8个字节，相对于TCP的20个字节信息包而言UDP的额外开销很小。</p>
+<li><p>管道机制</p>
+<p>  即在同一个TCP连接里面，客户端可以同时发送多个请求。</p>
 </li>
-<li><p>吞吐量不受拥挤控制算法的调节，只受应用软件生成数据的速率、传输带宽、源端和终端主机性能的限制。</p>
+<li><p>分块传输编码</p>
+<p>  即服务端没产生一块数据，就发送一块，采用”流模式”而取代”缓存模式”。</p>
 </li>
-<li><p>UDP是面向报文的。发送方的UDP对应用程序交下来的报文，在添加首部后就向下交付给IP层。既不拆分，也不合并，而是保留这些报文的边界，因此，应用程序需要选择合适的报文大小。</p>
+<li><p>新增请求方式</p>
+<ul>
+<li>PUT:请求服务器存储一个资源;</li>
+<li>DELETE：请求服务器删除标识的资源；</li>
+<li>OPTIONS：请求查询服务器的性能，或者查询与资源相关的选项和需求；</li>
+<li>TRACE：请求服务器回送收到的请求信息，主要用于测试或诊断；</li>
+<li>CONNECT：保留将来使用   </li>
+</ul>
 </li>
-</ol>
-<h3 id="协议对比"><a href="#协议对比" class="headerlink" title="协议对比"></a>协议对比</h3><p>UDP和TCP协议的主要区别是两者在如何实现信息的可靠传递方面不同。TCP协议中包含了专门的传递保证机制，当数据接收方收到发送方传来的信息时，会自动向发送方发出确认消息；发送方只有在接收到该确认消息之后才继续传送其它信息，否则将一直等待直到收到确认信息为止。与TCP不同，UDP协议并不提供数据传送的保证机制。如果在从发送方到接收方的传递过程中出现数据包的丢失，协议本身并不能做出任何检测或提示。因此，通常人们把UDP协议称为不可靠的传输协议。</p>
-<p>TCP 是面向连接的传输控制协议，而UDP 提供了无连接的数据报服务；TCP 具有高可靠性，确保传输数据的正确性，不出现丢失或乱序；UDP 在传输数据前不建立连接，不对数据报进行检查与修改，无须等待对方的应答，所以会出现分组丢失、重复、乱序，应用程序需要负责传输可靠性方面的所有工作；UDP 具有较好的实时性，工作效率较 TCP 协议高；UDP 段结构比 TCP 的段结构简单，因此网络开销也小。TCP 协议可以保证接收端毫无差错地接收到发送端发出的字节流，为应用程序提供可靠的通信服务。对可靠性要求高的通信系统往往使用 TCP 传输数据。</p>
-<h3 id="适用场合"><a href="#适用场合" class="headerlink" title="适用场合"></a>适用场合</h3><p>在选择UDP作为传输协议时必须要谨慎。在网络质量令人十分不满意的环境下，UDP协议数据包丢失会比较严重。但是由于UDP的特性：它不属于连接型协议，因而具有资源消耗小，处理速度快的优点，所以通常音频、视频和普通数据在传送时使用UDP较多，因为它们即使偶尔丢失一两个数据包，也不会对接收结果产生太大影响。比如我们聊天用的ICQ和QQ就是使用的UDP协议。</p>
-<h3 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h3><p>在现场测控领域，面向的是分布化的控制器、监测器等，其应用场合环境比较恶劣，这样就对待传输数据提出了不同的要求，如实时、抗干扰性、安全性等。基于此，现场通信中，若某一应用要将一组数据传送给网络中的另一个节点，可由UDP进程将数据加上报头后传送给IP进程，UDP协议省去了建立连接和拆除连接的过程!取消了重发检验机制，能够达到较高的通信速率。</p>
-<p><a href="https://baike.baidu.com/item/UDP/571511?fr=aladdin" target="_blank" rel="noopener">参考链接:百度百科</a></p>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li><p>虽然允许复用TCP连接，但是同一个TCP连接里面，所有的数据通信是按次序进行的。服务器只有处理完一个请求，才会接着处理下一个请求。如果前面的处理特别慢，后面就会有许多请求排队等着。这将导致“队头堵塞”。</p>
+</li>
+<li><p>避免方式：一是减少请求数，二是同时多开持久连接。</p>
+</li>
+</ul>
+<h2 id="HTTP-3-0-QUIC"><a href="#HTTP-3-0-QUIC" class="headerlink" title="HTTP 3.0 QUIC"></a>HTTP 3.0 QUIC</h2><h3 id="QUIC-Quick-UPD-internet-connections"><a href="#QUIC-Quick-UPD-internet-connections" class="headerlink" title="QUIC (Quick UPD internet connections)"></a>QUIC (Quick UPD internet connections)</h3><ul>
+<li><p>基于UDP的传输层协议，提供像TCP一样的传输可靠性、流量控制。</p>
+</li>
+<li><p>集成了TLS加密功能，减少了握手所花费的RTT个数。</p>
+</li>
+<li><p>实现了实现了HTTP/2中的多路复用功能。</p>
+</li>
+<li><p>实现了快速握手功能， 使用0-RTT或者1-RTT来建立连接。</p>
+</li>
+</ul>
+<p><a href="https://blog.csdn.net/b2222505/article/details/79391430" target="_blank" rel="noopener">http/3.0参考资料</a></p>
+<p>待补充 …</p>
 
         </div>
 
@@ -231,7 +262,7 @@
                 
                     <p class="copyright-item">
                         <span>本文链接:</span>
-                        <span><a href="https://wekic.com/2020/06/05/UDP/">https://wekic.com/2020/06/05/UDP/</a></span>
+                        <span><a href="https://wekic.com/2020/06/09/http2/">https://wekic.com/2020/06/09/http2/</a></span>
                     </p>
                     <p class="copyright-item">
                         <span>转载时须注明出处及本声明</span>
@@ -247,14 +278,6 @@
                 <span>标签:</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"># 计算机网络</a>
-                    
-                        <a href="/tags/UDP/"># UDP</a>
-                    
-                        <a href="/tags/%E4%BC%A0%E8%BE%93%E5%B1%82/"># 传输层</a>
-                    
-                        
                 </span>
             </div>
             <div>
@@ -265,10 +288,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2020/06/09/http2/">理解http1.x、http 2.0、http3.0</a>
             
-            
-            <a class="next" rel="next" href="/2020/05/26/TCP/">TCP/IP 知识要点</a>
+            <a class="next" rel="next" href="/2020/06/05/UDP/">了解UDP</a>
             
         </section>
 
