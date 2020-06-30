@@ -12,7 +12,7 @@
 
 
 
-<title>JavaScript内存管理和垃圾回收 | vincent</title>
+<title>react-setState | vincent</title>
 
 
 
@@ -173,21 +173,21 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">JavaScript内存管理和垃圾回收</h1>
+            <h1 class="post-title">react-setState</h1>
             
                 <div class="post-meta">
                     
 
                     
                         <span class="post-time">
-                        Date: <a href="#">五月 6, 2020&nbsp;&nbsp;13:51:43</a>
+                        Date: <a href="#">四月 28, 2020&nbsp;&nbsp;16:06:46</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/javascript/">javascript</a>
+                                <a href="/categories/React/">React</a>
                             
                         </span>
                     
@@ -196,24 +196,14 @@
         </header>
 
         <div class="post-content">
-            <p>javascript与一些底层语言在内存处理方式有区别。底层语言有专门的内存管理接口如<code>C语言</code>，需要手动跟踪处理内存的使用情况。JavaScript 具有自动垃圾收集机制，执行环境会负责管理代码执行过程中使用的内存。但是这并不意味着<code>javascript</code>开发者不需要去关心内存问题。 如果不了解内存管理机制，可能会造成内存泄露的情况。</p>
-<h2 id="内存生命周期"><a href="#内存生命周期" class="headerlink" title="内存生命周期"></a>内存生命周期</h2><ol>
-<li>分配内存</li>
-<li>使用分配到的内存（读、写）</li>
-<li>不需要时将其释放\归还</li>
-</ol>
-<h3 id="内存的分配场景"><a href="#内存的分配场景" class="headerlink" title="内存的分配场景"></a>内存的分配场景</h3><p>下面我们来分析一下函数中局部变量的正常生命周期。</p>
-<p>内存分配：局部变量只在函数执行的过程中存在。而在这个过程中，会为局部变量在栈（或堆）内存上分配相应的空间，以便存储它们的值。</p>
-<p>内存使用：然后在函数中使用这些变量，直至函数执行结束。</p>
-<p>内存回收：此时，局部变量就没有存在的必要了，因此可以释放它们的内存以供将来使用。大多数内存管理的问题都在这个阶段。在这里最艰难的任务是找到“哪些被分配的内存确实已经不再需要了”</p>
-<h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>通常，很容易判断变量是否还有存在的必要，但并非所有情况下都这么容易就能得出结论（例如：使用闭包的时）。垃圾收集器必须跟踪哪个变量有用哪个变量没用，对于不再有用的变量打上标记，以备将来收回其占用的内存。用于标识无用变量的策略可能会因实现而异，但具体到浏览器中的实现，则通常有两个策略：标记清除 和 引用计数。</p>
-<p>基本所有语言第二部分都是明确的。第一和第三部分在底层语言中是明确的，但在像JavaScript这些高级语言中，大部分都是隐含的。</p>
-<h3 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h3><p>一个对象如果有访问另一个对象的权限，叫做一个对象对另一个对象的引用。 引用计数算法把”对象是否在需要“简化为“对象有没有其他对象的引用”。<br>有个难以处理的问题： 当对象存在循环引用。引用计数算法考虑到他们相互都至少有一个引用，所以他们都不会被回收。</p>
-<h3 id="标记清除"><a href="#标记清除" class="headerlink" title="标记清除"></a>标记清除</h3><p>这个算法吧“对象是否不再需要”简化为“对象是否可以获得”。</p>
-<p><code>这个算法假定设置一个叫做根“root&quot;的对象。垃圾回收期将定期从根开始，找所有从根来时引用的对象，然后找到这些对象引用的对象，从根来时，垃圾回收器将找到所有可以获得的对象和收集所有不能获得的对象。</code></p>
-<p>通过这种算法，循环引用就不再是问题了。</p>
-<p>限制： 那些无法从根对象找到的对象都将被清除。</p>
-
+            <h2 id="合成事件"><a href="#合成事件" class="headerlink" title="合成事件"></a>合成事件</h2><h3 id="什么是合成事件"><a href="#什么是合成事件" class="headerlink" title="什么是合成事件"></a>什么是合成事件</h3><blockquote>
+<p>React 为了坚决跨平台之间的兼容性问题，封装的一套事件机制，用来代理原生事件。</p>
+</blockquote>
+<p><code>点击事件</code> -&gt; <code>dispatchInteractiveEvent</code> -&gt; <code>interactiveUpdates$1</code> -&gt; <code>dispatchEvent</code> -&gt; <code>batchUpdates$1</code> -&gt; <code>handle Top Level</code> -&gt; <code>runExtractedEventsInBatch</code> -&gt; <code>runEventsInBatch</code> -&gt; <code>forEachAccumulated</code> -&gt; <code>executeDispatchesAndRelease To pLevel</code> -&gt; <code>executeDispatchesAndRelease</code> -&gt; <code>executeDispatchesInOrder</code> -&gt; <code>executeDispatch</code> -&gt; <code>invokeGuardedCallbackAndCatchFirstError</code> -&gt; <code>invokeGuardedCallback</code> -&gt; <code>invokeGuardedCallbackDev</code> -&gt; <code>callCallback</code></p>
+<p>从<code>dispatchEvent</code>到<code>callCallback</code>都是合成事件的处理逻辑，<code>callCallback</code>就是最初的<code>click event</code>,<code>interactiveUpdates$1</code>方法中有<code>try</code>和<code>finally</code>两个代码块，这里就是执行<code>try</code>的代码块。</p>
+<p><code>callCallback</code> -&gt; <code>Component.prototype.setState</code> -&gt; <code>enqueueSetState</code> -&gt; <code>scheduleWork</code> -&gt; <code>requestWork</code></p>
+<p>在合成事件中, <code>isRendering</code>、<code>isBatchingUpdates</code>、<code>isUnbatchingUpdates</code>三个值为<code>false</code>,<code>false</code>,<code>true</code>。会导致在 <code>requestWork</code>中被return，并没有走到<code>performWorkOnRoot</code>或者是<code>performSyncWork</code>，return后的代码会回到你的<code>click event</code>执行其他代码，这也是为什么在这里的值不是更新之后的state，因为并没有走到<code>performWork</code>去更新，知道代码执行完成，整个在<code>interactiveUpdate$1</code>中的<code>try</code>代码块也就执行完了，接下来就会执行<code>interactiveUpdate$1</code>中的<code>finally</code>代码块了。</p>
+<h2 id="setState-是同步还是异步"><a href="#setState-是同步还是异步" class="headerlink" title="setState 是同步还是异步 ?"></a>setState 是同步还是异步 ?</h2>
         </div>
 
         
@@ -227,7 +217,7 @@
                 
                     <p class="copyright-item">
                         <span>本文链接:</span>
-                        <span><a href="https://wekic.com/2020/05/06/GarbageCollecation/">https://wekic.com/2020/05/06/GarbageCollecation/</a></span>
+                        <span><a href="https://wekic.com/2020/04/28/react-setState/">https://wekic.com/2020/04/28/react-setState/</a></span>
                     </p>
                     <p class="copyright-item">
                         <span>转载时须注明出处及本声明</span>
@@ -253,10 +243,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2020/05/12/LazyLoad/">延迟加载</a>
+                <a class="prev" rel="prev" href="/2020/05/06/GarbageCollecation/">JavaScript内存管理和垃圾回收</a>
             
             
-            <a class="next" rel="next" href="/2020/04/28/react-setState/">react-setState</a>
+            <a class="next" rel="next" href="/2020/04/10/HTTPS-HTTP/">什么是HTTPS？与HTTP有的区别</a>
             
         </section>
 

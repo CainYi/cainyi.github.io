@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Vincent">
+
+
+
+
+
+<title>javascript中的事件循环 | vincent</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Vincent</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Vincent</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">移到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">javascript中的事件循环</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">六月 20, 2020&nbsp;&nbsp;19:41:49</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/javascript/">javascript</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="先上Demo"><a href="#先上Demo" class="headerlink" title="先上Demo"></a>先上Demo</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.resolve()</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise1'</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise2'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>);</span><br></pre></td></tr></table></figure>
+<p>对于没有接触过时间循环的同学，当看到这部分的代码时，可能会不知所措，自己对输出的结果会没有把握。</p>
+<p>正确的输出结果如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">script start</span><br><span class="line">script end</span><br><span class="line">promise1</span><br><span class="line">promise2</span><br></pre></td></tr></table></figure>
+
+<h4 id="为什么会是这样的输出结果呢？-本文暂时只考虑在浏览器环境下的事件循环"><a href="#为什么会是这样的输出结果呢？-本文暂时只考虑在浏览器环境下的事件循环" class="headerlink" title="为什么会是这样的输出结果呢？ 本文暂时只考虑在浏览器环境下的事件循环"></a>为什么会是这样的输出结果呢？ 本文暂时只考虑在浏览器环境下的事件循环</h4><p>要理解这一点，您需要知道事件循环如何处理任务和微任务。当你第一次遇到它时，这可能会让你头疼。<br>每个“线程”都有自己的事件循环，因此每个web worker都有自己的事件循环，因此它可以独立执行，在同一源的所有窗口都共享一个事件循环，因为他们可以同步通信，事件循环持续运行，执行任何排队的人物。事件循环有多个任务源，这些任务源保证了执行执行顺序。</p>
+<p>setTimeout等待一个给定的延迟，然后为他的回调调度一个新任务。这就是为什么setTimeout被记录在脚本结束之后，因为输出脚本结束是第一个任务的一部分。而setTimeout被记录在一个单独任务中。</p>
+<p>微任务通常安排在当前执行的脚本之后立即出发，比如对一批操作做出反应，或者不承担整个新任务的代驾的情况下使用某些异步。只要没有其他javascript在执行中，微任务队列在回调后处理，并在每个任务结束时处理。在微任务期排队的任何其他微任务都被添加到队列的末尾并进行处理。比如mutation observer回调、promise回调等。</p>
+<p>只要promise达成，或者如果它已经达成，它就会对伟人进行排队，以获得它的回到。这确保promise回调是异步的，即使promise已经resolve。then 在一个已确定的promise之前，立即排队处理一个微任务。这就是为什么脚本结束后输出promise1和promise2，因为当前运行的脚本必须在处理微任务之前完成，promise1和promise2在setTimeout之前被输出。</p>
+<h3 id="宏任务-macro-task"><a href="#宏任务-macro-task" class="headerlink" title="宏任务(macro task)"></a>宏任务(macro task)</h3><p>script(全局任务)、setTimeout、setInterval、setImmediate、I/O、UI rendering</p>
+<h3 id="微任务-micro-task"><a href="#微任务-micro-task" class="headerlink" title="微任务(micro task)"></a>微任务(micro task)</h3><p>process.nextTick、promise,Object.observer,MutationObserver</p>
+<h3 id="执行顺序"><a href="#执行顺序" class="headerlink" title="执行顺序"></a>执行顺序</h3><blockquote>
+<p>执行顺序为 script 先进入函数调用栈，然后执行遇到任何其他宏仁务，比如遇到了 setTimeout，就把 setTimeout 放进宏仁务队列中，遇到了微任务就放入微任务队列中，等到函数调用栈的所有内容出栈后，然后执行微任务队列，然后再回头执行宏仁务队列，再进入函数调用栈再执行微任务队列，直到宏仁务队列执行完毕。</p>
+</blockquote>
+<h2 id="异步原理"><a href="#异步原理" class="headerlink" title="异步原理"></a>异步原理</h2><p>JavaScript是单线程执行的，无法同时执行多段代码。当某一段代码正在执行的时候，所有后续的任务都必须等待，形成一个队列。一旦当前任务执行完毕，再从队列中取出下一个任务，这也常被称为 “阻塞式执行”。所以一次鼠标点击，或是计时器到达时间点，或是Ajax请求完成触发了回调函数，这些事件处理程序或回调函数都不会立即运行，而是立即排队，一旦线程有空闲就执行。假如当前 JavaScript线程正在执行一段很耗时的代码，此时发生了一次鼠标点击，那么事件处理程序就被阻塞，用户也无法立即看到反馈，事件处理程序会被放入任务队列，直到前面的代码结束以后才会开始执行。如果代码中设定了一个 setTimeout，那么浏览器便会在合适的时间，将代码插入任务队列，如果这个时间设为 0，就代表立即插入队列，但不是立即执行，仍然要等待前面代码执行完毕。所以 setTimeout 并不能保证执行的时间，是否及时执行取决于 JavaScript 线程是拥挤还是空闲。</p>
+<h4 id="再分析下面代码的执行顺序"><a href="#再分析下面代码的执行顺序" class="headerlink" title="再分析下面代码的执行顺序"></a>再分析下面代码的执行顺序</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Promise1'</span>)</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'setTimeout2'</span>)</span><br><span class="line">    &#125;,<span class="number">0</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'setTimeout1'</span>)</span><br><span class="line">    <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Promise2'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'start'</span>)</span><br><span class="line"></span><br><span class="line">----------------------------------------------------------------</span><br><span class="line"><span class="comment">// start</span></span><br><span class="line"><span class="comment">// Promise 1</span></span><br><span class="line"><span class="comment">// setTimeout1</span></span><br><span class="line"><span class="comment">// Promise2</span></span><br><span class="line"><span class="comment">// setTimeout2</span></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>版权属于:</span>
+                        <span>Vincent</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://wekic.com/2020/06/20/javascript-EventLoop/">https://wekic.com/2020/06/20/javascript-EventLoop/</a></span>
+                    </p>
+                    <p class="copyright-item">
+                        <span>转载时须注明出处及本声明</span>
+                    </p>
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/javascript/"># javascript</a>
+                    
+                        <a href="/tags/event-loop/"># event loop</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/06/25/React-Fiber/">React-Fiber</a>
+            
+            
+            <a class="next" rel="next" href="/2020/06/15/ReactFunctionComponentOptimization/">React 函数式组件进行优化</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Vincent | <a href="" target="_blank">湘ICP备16003524号 </a></span>
+    </div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?db7f9055c0e4d683f78b28943eaf187a";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</footer>
+
+    </div>
+</body>
+</html>
