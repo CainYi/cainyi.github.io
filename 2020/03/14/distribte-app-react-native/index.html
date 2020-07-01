@@ -235,6 +235,24 @@
 <p>在上传完发布包之后 可以在构建版本中选择上传之后的版本。<br><img src="./1587362843340.jpg" alt="pic"><br><img src="./1587362927086.jpg" alt="pic"></p>
 <h3 id="App审核的信息"><a href="#App审核的信息" class="headerlink" title="App审核的信息"></a>App审核的信息</h3><p>如果app有登录，需要供用户名和密码，以便审核人员登录App进行验证。并提供下开发的联系信息。方便及时收到审核反馈。<br><img src="./1587363056402.jpg" alt="pic"></p>
 <p>检查当前版本的提交信息无误之后，就可以提交审核。审核的进度有邮件提醒。</p>
+<h2 id="自动打包"><a href="#自动打包" class="headerlink" title="自动打包"></a>自动打包</h2><h3 id="配置上传蒲公英托管平台进行测试分发"><a href="#配置上传蒲公英托管平台进行测试分发" class="headerlink" title="配置上传蒲公英托管平台进行测试分发"></a>配置上传蒲公英托管平台进行测试分发</h3><p><a href="https://www.pgyer.com/" target="_blank" rel="noopener">蒲公英</a></p>
+<h3 id="首先先安装依赖"><a href="#首先先安装依赖" class="headerlink" title="首先先安装依赖"></a>首先先安装依赖</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Npm</span></span><br><span class="line">npm install react-native-upload --save-dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># Yarn</span></span><br><span class="line">yarn add react-native-upload --dev</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成配置"><a href="#生成配置" class="headerlink" title="生成配置"></a>生成配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx upload-init</span><br></pre></td></tr></table></figure>
+
+<p>执行命令后会在项目根目录中创建一个upload.json文件，并生成以下内容：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 未用到的配置，可以置空不填写，也可以直接删除</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 上传到蒲公英</span></span><br><span class="line">    <span class="attr">"pgy"</span>: &#123;</span><br><span class="line">        <span class="comment">// 上传凭证，访问链接 https://www.pgyer.com/account/api ，复制Api Key</span></span><br><span class="line">        <span class="attr">"pgy_api_key"</span>: <span class="string">""</span>,</span><br><span class="line">        <span class="comment">// App安装方式，共有两种   2：密码安装，3：邀请安装</span></span><br><span class="line">        <span class="attr">"pgy_install_type"</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="comment">// App安装时的访问密码，选择 "2密码安装" 时，访问密码必填</span></span><br><span class="line">        <span class="attr">"pgy_install_password"</span>: <span class="string">"123456"</span>,</span><br><span class="line">        <span class="attr">"ios_export_plist"</span>: <span class="string">"./ios-export/ad-hoc.plist"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自动打包上传"><a href="#自动打包上传" class="headerlink" title="自动打包上传"></a>自动打包上传</h3><ul>
+<li><p>蒲公英</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx upload-pgy</span><br><span class="line"></span><br><span class="line"><span class="comment"># 填写更新日志</span></span><br><span class="line">npx upload-pgy --<span class="built_in">log</span> <span class="string">"增加xxx功能"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 忽略平台</span></span><br><span class="line">npx upload-pgy --no-android</span><br><span class="line">npx upload-pgy --no-ios</span><br><span class="line"></span><br><span class="line"><span class="comment"># android默认打包release版本，可以改成debug版本</span></span><br><span class="line">npx upload-pgy --variant=debug</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认上传所有生成的android apk文件，可以使用正则表达式指定文件名称</span></span><br><span class="line">npx upload-pgy --apk=app-release.apk</span><br><span class="line">npx upload-pgy --apk=x86_64</span><br><span class="line">npx upload-pgy --apk=release-[0-9]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只打包不上传</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 同时打包android和ios</span></span><br><span class="line">npx upload-build --ios-export-plist path/to/xxx.plist</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安卓默认打包release版本，可以改成debug版本</span></span><br><span class="line">npx upload-build --ios-export-plist path/to/xxx.plist --variant=debug</span><br><span class="line"></span><br><span class="line"><span class="comment"># 单独打包android</span></span><br><span class="line">npx upload-build --no-ios</span><br><span class="line"></span><br><span class="line"><span class="comment"># 单独打包ios</span></span><br><span class="line">npx upload-build --no-android --ios-export-plist path/to/xxx.plist</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
 
         </div>
 
