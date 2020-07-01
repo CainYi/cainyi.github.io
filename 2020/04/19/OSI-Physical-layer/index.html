@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Vincent">
+
+
+
+
+
+<title>OSI-物理层 | vincent</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Vincent</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Vincent</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">文章</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开</a>
+        <a onclick="go_top()">返回顶部</a>
+        <a onclick="go_bottom()">移到底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">OSI-物理层</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 19, 2020&nbsp;&nbsp;19:41:49</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                            
+                                <a href="/categories/%E7%89%A9%E7%90%86%E5%B1%82/">物理层</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>物理层解决如何在链接各种计算机的传输媒体上传输数据比特流，而不是只具体的传输媒体。</p>
+<h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><p>物理层的主要任务描述为确定与传输媒体的接口有关的一些特性：</p>
+<ul>
+<li>机械特性 例接口形状、大小、引线数目、固定和锁定装置等。</li>
+<li>电气特性 规定的电压范围</li>
+<li>功能特性 知名某条线上出现的某一点评的电压意义 例规定-5V表示0，+5V表示1</li>
+<li>过程特性 也称规程特性，规定建立连接时各个相关部件的工作步骤</li>
+</ul>
+<h4 id="数据通信的基础知识"><a href="#数据通信的基础知识" class="headerlink" title="数据通信的基础知识"></a>数据通信的基础知识</h4><p>数据通信系统的模型：</p>
+<p><img src="./tongxin.jpg" alt="jpg"></p>
+<p>一个数据通信系统可以大致划分为三大部分：源系统、传输系统、目的系统。</p>
+<p>源系统一般包括两部分：</p>
+<ul>
+<li><p>源点（就是产生要传输的数据）</p>
+</li>
+<li><p>发送器 生成的数比特流通过发送器编码才能在传输系统中传输</p>
+</li>
+</ul>
+<p>目的系统也氛围两部分</p>
+<ul>
+<li><p>接收器 接受传输过来的信号， 转换成目标设备能处理的信息</p>
+</li>
+<li><p>终点 接受设备接受获取传送来的数字比特流</p>
+</li>
+</ul>
+<h3 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h3><p>通信的目的就是传输消息</p>
+<p>数据(data)  – 传送消息的实体 （RFC 4949）数据是使用特定方式表示的信息，通常就是有意义的符号序列。</p>
+<p>信号(signal) – 数据的电气的或电磁的表现</p>
+<pre><code>根据信号中代表消息的参数的取值方式不同，分成两类：
+    模拟信号，或连续信号 --- 代表消息的参数的取值是连续的(调制解调器-&gt; 电话端之间的信号)。
+    数字信号，或离散信号 --- 代表消息的参数的取值是离散的。</code></pre><p>码元(code) – 在使用时间域的波形表示数字信号是，则代表不同离散数值的基本波形就成了码元。</p>
+<h3 id="信道-channel-的基本概念"><a href="#信道-channel-的基本概念" class="headerlink" title="信道(channel)的基本概念"></a>信道(channel)的基本概念</h3><p>信道用来表示向某一个方向传送信息的媒体。</p>
+<p>从通信的双方信息交互方式可分为三种基本方式：</p>
+<ol>
+<li>单向通信(当那个通信) 只能通过一个方向发送信息(例广播、电视信号)。</li>
+<li>双向交替通信(半双工通信) 通信双方都可以发送信息，但不能同时发送信息，也不能同时接受信息。</li>
+<li>双向同向通信(全双工通信) 可以同时发送和接受消息。</li>
+</ol>
+<h3 id="基带-base-band-和带通-band-pass"><a href="#基带-base-band-和带通-band-pass" class="headerlink" title="基带(base band)和带通(band pass)"></a>基带(base band)和带通(band pass)</h3><p>基带信号(基本频带信号) – 来自信源的信号。像计算机输出的代表各种文字或图像文件的数据信号都属于基带信号。基带信号就是发出的直接表达了要传输的信息的信号，比如我们说话的声波就是基带信号。</p>
+<p>带通信号 – 把基带信号经过载波调制后，把信号的频率返回搬移到较高的频段以便在信道中传输。</p>
+<p>因此在传输距离较近时，计算机网络都采用<code>基带传输</code>方式，由于在近距离范围内基带信号的衰减不大，从而信号内容不会发生变化。因此在传输距离较近时，计算机网络都采用基带传输方式。比如计算机到监视器、打印机等外设信号就是基带传输。</p>
+<h3 id="调制方法"><a href="#调制方法" class="headerlink" title="调制方法"></a>调制方法</h3><ul>
+<li><p>调幅（AM） 载波的振幅随着基带数字信号而变化</p>
+</li>
+<li><p>调频（FM) 载波的频率随着基带数字信号而变化</p>
+</li>
+<li><p>调相（PM) 载波的初始相位随基带信号而变化</p>
+</li>
+</ul>
+<p><img src="./1593591359730.jpg" alt="jpg"></p>
+<p>等。</p>
+<h3 id="知识总结"><a href="#知识总结" class="headerlink" title="知识总结"></a>知识总结</h3><p>物理层主要任务就是确定与传输媒体的接口有关的一些特性，如机械特性、电气特性、功能特性和过程特性。</p>
+<p>一个数据通信通信分为三大部分：源系统、传输系统、目的系统。</p>
+<p>通信的目的是传送信息。数据是运送消息的实体。信号则是数据的电气或电磁的表现。</p>
+<p>根据信号中代表消息的参数的取值方式不同，信号可以分为模拟信号(连续信号)和数字信号(离散信号)。代表数字信号不同离散数值的基本波形成为码元。</p>
+<p>根据双反个信息交换的方式，通信可以分为单向通信(单工通信)，双向交替通信(半双工通信)，双向同时通信（全双工通信）。</p>
+<p>来自信源的信号叫做基带信号，信号主要在信道上传输就要经过调制。调制有基带调制和带通调制之分。最基本的带通调制方法有调幅、调频、调相。还有更重要的调制方法，比如正交振幅调制。</p>
+<p>要提高数据在信道上的传输速率，可以使用更好的传输媒体，或使用先进的调制技术。但数据传输速率不可能任意地提高。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>版权属于:</span>
+                        <span>Vincent</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>本文链接:</span>
+                        <span><a href="https://wekic.com/2020/04/19/OSI-Physical-layer/">https://wekic.com/2020/04/19/OSI-Physical-layer/</a></span>
+                    </p>
+                    <p class="copyright-item">
+                        <span>转载时须注明出处及本声明</span>
+                    </p>
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>标签:</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"># 计算机网络</a>
+                    
+                        <a href="/tags/OSI/"># OSI</a>
+                    
+                        <a href="/tags/%E7%89%A9%E7%90%86%E5%B1%82/"># 物理层</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/04/28/react-setState/">react-setState</a>
+            
+            
+            <a class="next" rel="next" href="/2020/04/10/HTTPS-HTTP/">什么是HTTPS？与HTTP有的区别</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Vincent | <a href="" target="_blank">湘ICP备16003524号 </a></span>
+    </div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?db7f9055c0e4d683f78b28943eaf187a";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</footer>
+
+    </div>
+</body>
+</html>
